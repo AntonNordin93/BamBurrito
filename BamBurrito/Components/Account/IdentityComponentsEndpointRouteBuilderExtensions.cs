@@ -1,6 +1,6 @@
 using BamBurrito.Components.Account.Pages;
 using BamBurrito.Components.Account.Pages.Manage;
-using BamBurrito.Data;
+using BamBurrito.Core.Entities;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;

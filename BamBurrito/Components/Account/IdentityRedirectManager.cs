@@ -1,4 +1,4 @@
-using BamBurrito.Data;
+using BamBurrito.Core.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 
