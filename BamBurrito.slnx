@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BamBurrito.Client/BamBurrito.Client.csproj" />
+  <Project Path="BamBurrito.Core/BamBurrito.Core.csproj" Id="d39856e7-7cc5-4a5d-aa36-072a83f30e6e" />
+  <Project Path="BamBurrito.Infrastructure/BamBurrito.Infrastructure.csproj" Id="5a493250-3f05-46cd-8fa8-642e599994be" />
+  <Project Path="BamBurrito/BamBurrito.csproj" />
+</Solution>
