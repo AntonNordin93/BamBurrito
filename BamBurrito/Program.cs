@@ -62,6 +62,7 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseHttpsRedirection();
 
 app.UseAntiforgery();
+app.UseSerilogRequestLogging();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
