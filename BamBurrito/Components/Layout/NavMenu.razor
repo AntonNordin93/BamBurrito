@@ -1,14 +1,14 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
 
-<nav class="bg-[#f05c31] shadow-md w-full z-50 top-0 sticky">
+<nav class="bg-[#FF8400] shadow-md w-full z-50 top-0 sticky">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
+        <div class="flex justify-between items-center h-24">
 
             <!-- Logo Section -->
             <div class="flex-shrink-0 flex items-center">
-                <a href="" class="flex items-center gap-2">
-                    <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-10 w-auto" />
+                <a href="" class="flex items-center gap-2 transform transition hover:scale-105 duration-300">
+                    <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-16 md:h-20 w-auto" />
                 </a>
             </div>
 
@@ -25,7 +25,7 @@
                         <form action="Account/Logout" method="post" class="inline">
                             <AntiforgeryToken />
                             <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                            <button type="submit" class="flex items-center px-4 py-2 text-sm font-bold text-white uppercase hover:text-[#f05c31] hover:bg-white rounded-md transition duration-200">
+                            <button type="submit" class="flex items-center px-4 py-2 text-sm font-bold text-black uppercase cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-110">
                                 Logga ut
                             </button>
                         </form>
@@ -39,7 +39,7 @@
 
             <!-- Hamburger Button (Mobile) -->
             <div class="flex items-center md:hidden">
-                <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-[#f05c31] hover:bg-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-2 rounded-md text-black hover:scale-110 transform transition-transform focus:outline-none">
                     <span class="sr-only">Öppna meny</span>
                     @if (collapseNavMenu)
                     {
@@ -62,8 +62,8 @@
     </div>
 
     <!-- Mobile Navigation Menu -->
-    <div class="@NavMenuCssClass md:hidden bg-[#f05c31] border-t border-white/20 absolute w-full shadow-lg">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+    <div class="@NavMenuCssClass md:hidden bg-[#FF8400] border-t border-black/10 absolute w-full shadow-lg">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
             <NavItem Href="" Match="NavLinkMatch.All" OnClick="ToggleNavMenu">Startsida</NavItem>
             <NavItem Href="meny" OnClick="ToggleNavMenu">Meny</NavItem>
             <NavItem Href="blank" OnClick="ToggleNavMenu">Ny plats</NavItem>
@@ -75,7 +75,7 @@
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-sm font-bold text-white uppercase hover:text-[#f05c31] hover:bg-white rounded-md transition duration-200">
+                        <button type="submit" class="flex items-center w-full justify-center px-4 py-2 text-sm font-bold text-black uppercase cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-110">
                             Logga ut
                         </button>
                     </form>
