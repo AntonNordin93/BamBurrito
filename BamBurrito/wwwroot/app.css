@@ -2,6 +2,14 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+@font-face {
+    font-family: 'Trueno';
+    src: url('fonts/TruenoRoundBd.woff') format('woff'),
+         url('fonts/TruenoRoundBd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 .font-bangers {
     font-family: 'Bangers', cursive;
     letter-spacing: 2px;
