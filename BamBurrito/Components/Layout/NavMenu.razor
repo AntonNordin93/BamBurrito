@@ -2,18 +2,18 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
+@rendermode InteractiveServer
+
 <nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky border-b-2 border-[#e64e1c]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24 relative">
 
-            <!-- Logo Section (Left) -->
             <div class="absolute left-4 md:left-0 flex-shrink-0 flex items-center">
                 <a href="" class="flex items-center gap-2 transform transition hover:scale-105 duration-300">
                     <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-16 md:h-20 w-auto filter drop-shadow-md" />
                 </a>
             </div>
 
-            <!-- Main Navigation Links (Centered Desktop) -->
             <div class="hidden md:flex w-full justify-center items-center space-x-4">
                 <NavItem Href="meny">Meny</NavItem>
                 <img src="assets/burrito.png" alt="Burrito icon" class="nav-burrito-icon h-8 w-auto filter drop-shadow-md mx-2 opacity-80" />
@@ -27,21 +27,18 @@
                 <NavItem Href="om-oss">Om Oss</NavItem>
             </div>
 
-            <!-- Hamburger Button (Mobile) -->
-            <div class="absolute right-4 md:right-0 flex items-center h-full z-50">
+            <div class="absolute right-4 md:right-0 flex items-center h-full">
                 <button type="button" @onclick="ToggleNavMenu" class="md:hidden inline-flex items-center justify-center p-3 rounded-md text-black hover:scale-110 transform transition-transform focus:outline-none relative z-50">
                     <span class="sr-only">Öppna meny</span>
                     @if (collapseNavMenu)
                     {
-                        <!-- Icon when menu is closed -->
-                        <svg class="h-10 w-10 sm:h-12 sm:w-12 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     }
                     else
                     {
-                        <!-- Icon when menu is open -->
-                        <svg class="h-10 w-10 sm:h-12 sm:w-12 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <svg class="h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     }
@@ -51,7 +48,6 @@
         </div>
     </div>
 
-    <!-- Mobile Navigation Menu Dropdown -->
     <div class="@NavMenuCssClass md:hidden absolute w-full left-0 top-[100%] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] rounded-b-2xl border-b-2 border-x-2 border-[#e64e1c] bg-[#e67500] z-50">
         <div class="px-2 pt-6 pb-8 space-y-5 sm:px-3 text-center flex flex-col items-center relative z-50">
             <NavItem Href="meny" OnClick="ToggleNavMenu">Meny</NavItem>
@@ -88,6 +84,7 @@
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        collapseNavMenu = true; // Stänger menyn automatiskt när man klickar på en länk!
         StateHasChanged();
     }
 
@@ -96,4 +93,3 @@
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
-
