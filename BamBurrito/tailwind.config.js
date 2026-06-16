@@ -5,7 +5,11 @@ module.exports = {
         '../BamBurrito.Web.Client/**/*.razor'
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                bamorange: '#e64e1c',
+            }
+        },
     },
     plugins: [],
 }
