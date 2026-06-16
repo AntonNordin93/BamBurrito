@@ -13,6 +13,16 @@ module.exports = {
                 bangers: ['Bangers', 'system-ui'],
                 trueno: ['Trueno', 'orig_trueno_round_bold', 'system-ui'],
                 anton: ['Anton', 'system-ui'],
+            },
+            keyframes: {
+                spinbounce: {
+                    '0%, 100%': { transform: 'rotate(0deg) scale(1)' },
+                    '50%': { transform: 'rotate(180deg) scale(1.3)' },
+                    '100%': { transform: 'rotate(360deg) scale(1)' }
+                }
+            },
+            animation: {
+                'spin-bounce': 'spinbounce 0.6s ease-in-out'
             }
         },
     },
