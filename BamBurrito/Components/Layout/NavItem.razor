@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Components.Routing
+
+<NavLink class="flex items-center px-4 py-2 text-sm font-semibold text-gray-800 uppercase hover:text-red-500 hover:bg-gray-100 rounded-md transition duration-200" href="@Href" Match="@Match" @onclick="OnClick">
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <span class="@Icon mr-2" aria-hidden="true"></span>
+    }
+    @ChildContent
+</NavLink>
+
+@code {
+    [Parameter]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Icon { get; set; }
+
+    [Parameter]
+    public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+}

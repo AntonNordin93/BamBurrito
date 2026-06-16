@@ -1,13 +1,54 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>BAM! Burrito</PageTitle>
 
-<div class="flex justify-center items-center h-screen bg-gray-50">
-    <div class="bg-white p-12 rounded-3xl shadow-xl border border-gray-100 max-w-md text-center transform transition hover:scale-105 duration-300">
-        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">Bamburrito</h1>
-        <p class="text-gray-500 text-lg mb-6">Foodtruck & Catering</p>
-        <div class="bg-red-500 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:bg-red-600 transition">
-            Boka här
+<div class="relative bg-gray-900 overflow-hidden flex-grow flex items-center justify-center min-h-[80vh]">
+    <div class="absolute inset-0">
+        <!-- Background inspired by the dark theme on bamburrito.se using one of the actual images if available, or just keeping it dark -->
+        <!-- Replacing plain dark background with a cool burrito image -->
+        <img class="w-full h-full object-cover opacity-40" src="assets/sombreroburrito.png" alt="BamBurrito Background" />
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        <!-- Main headline -->
+        <h1 class="text-4xl md:text-7xl font-extrabold text-white tracking-widest uppercase drop-shadow-lg mb-6">
+            ¡Bienvenidos a <span class="text-red-500">BAM! Burrito!</span>
+        </h1>
+
+        <p class="mt-4 text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto font-semibold drop-shadow-md mb-10">
+            Klassisk foodtruck & catering - Äkta smaker fyllda med kärlek!
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="meny" class="inline-block bg-red-600 border-2 border-red-600 rounded-full py-3 px-8 text-lg font-bold text-white hover:bg-transparent hover:text-red-500 transition duration-300 shadow-xl uppercase tracking-wider">
+                Unna dig en burrito!
+            </a>
+            <a href="kontakt" class="inline-block bg-transparent border-2 border-white rounded-full py-3 px-8 text-lg font-bold text-white hover:bg-white hover:text-gray-900 transition duration-300 shadow-xl uppercase tracking-wider">
+                Info Info Info
+            </a>
         </div>
+    </div>
+</div>
+
+<div class="bg-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+             <!-- Features -->
+             <div class="p-6 bg-gray-50 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                 <h3 class="text-2xl font-bold text-gray-900 mb-2 uppercase">Meny</h3>
+                 <p class="text-gray-600 mb-4">Kolla in våra smarriga burritos och tacos.</p>
+                 <a href="meny" class="text-red-500 font-bold hover:underline">Se Meny &rarr;</a>
+             </div>
+             <div class="p-6 bg-gray-50 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                 <h3 class="text-2xl font-bold text-gray-900 mb-2 uppercase">Kontakt</h3>
+                 <p class="text-gray-600 mb-4">Catering, event eller bara allmänt häng?</p>
+                 <a href="kontakt" class="text-red-500 font-bold hover:underline">Hör av dig &rarr;</a>
+             </div>
+             <div class="p-6 bg-gray-50 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition duration-300">
+                 <h3 class="text-2xl font-bold text-gray-900 mb-2 uppercase">Platser</h3>
+                 <p class="text-gray-600 mb-4">Var står foodtrucken idag? Hitta oss!</p>
+                 <a href="blank" class="text-red-500 font-bold hover:underline">Hitta oss &rarr;</a>
+             </div>
+         </div>
     </div>
 </div>

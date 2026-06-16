@@ -1,76 +1,108 @@
 ﻿@implements IDisposable
-
 @inject NavigationManager NavigationManager
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BamBurrito</a>
+<nav class="bg-white shadow-md w-full z-50 top-0 sticky">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+
+            <!-- Logo Section -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="" class="flex items-center gap-2">
+                    <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-10 w-auto" />
+                    <!-- Hide name on smallest screens to give room to the logo -->
+                    <span class="hidden sm:block text-2xl font-extrabold text-red-500 uppercase tracking-tighter hover:text-gray-900 transition duration-300">
+                        BamBurrito
+                    </span>
+                </a>
+            </div>
+
+            <!-- Main Navigation Links (Desktop) -->
+            <div class="hidden md:flex md:space-x-4 items-center">
+                <NavItem Href="" Match="NavLinkMatch.All">Startsida</NavItem>
+                <NavItem Href="meny">Meny</NavItem>
+                <NavItem Href="blank">Ny plats</NavItem>
+                <NavItem Href="kontakt">Info</NavItem>
+
+                <AuthorizeView>
+                    <Authorized>
+                        <NavItem Href="Account/Manage">@context.User.Identity?.Name</NavItem>
+                        <form action="Account/Logout" method="post" class="inline">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                            <button type="submit" class="flex items-center px-4 py-2 text-sm font-semibold text-gray-800 uppercase hover:text-red-500 hover:bg-gray-100 rounded-md transition duration-200">
+                                Logga ut
+                            </button>
+                        </form>
+                    </Authorized>
+                    <NotAuthorized>
+                        <NavItem Href="Account/Login">Logga in</NavItem>
+                        <NavItem Href="Account/Register">Registrera</NavItem>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+
+            <!-- Hamburger Button (Mobile) -->
+            <div class="flex items-center md:hidden">
+                <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
+                    <span class="sr-only">Öppna meny</span>
+                    @if (collapseNavMenu)
+                    {
+                        <!-- Icon when menu is closed -->
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <!-- Icon when menu is open -->
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    }
+                </button>
+            </div>
+
+        </div>
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+    <!-- Mobile Navigation Menu -->
+    <div class="@NavMenuCssClass md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <NavItem Href="" Match="NavLinkMatch.All" OnClick="ToggleNavMenu">Startsida</NavItem>
+            <NavItem Href="meny" OnClick="ToggleNavMenu">Meny</NavItem>
+            <NavItem Href="blank" OnClick="ToggleNavMenu">Ny plats</NavItem>
+            <NavItem Href="kontakt" OnClick="ToggleNavMenu">Info</NavItem>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="auth">
-                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-            </NavLink>
-        </div>
-
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
+            <AuthorizeView>
+                <Authorized>
+                    <NavItem Href="Account/Manage" OnClick="ToggleNavMenu">@context.User.Identity?.Name</NavItem>
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                        <button type="submit" class="flex items-center w-full text-left px-4 py-2 text-sm font-semibold text-gray-800 uppercase hover:text-red-500 hover:bg-gray-100 rounded-md transition duration-200">
+                            Logga ut
                         </button>
                     </form>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-    </nav>
-</div>
+                </Authorized>
+                <NotAuthorized>
+                    <NavItem Href="Account/Login" OnClick="ToggleNavMenu">Logga in</NavItem>
+                    <NavItem Href="Account/Register" OnClick="ToggleNavMenu">Registrera</NavItem>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+</nav>
 
 @code {
     private string? currentUrl;
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "hidden" : "block";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
 
     protected override void OnInitialized()
     {
