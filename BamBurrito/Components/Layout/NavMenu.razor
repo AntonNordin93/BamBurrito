@@ -1,7 +1,8 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
-<nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky rounded-b-xl border-b-2 border-[#e64e1c]">
+<nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky border-b-2 border-[#e64e1c]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24 relative">
 
@@ -51,7 +52,7 @@
     </div>
 
     <!-- Mobile Navigation Menu -->
-    <div class="@NavMenuCssClass md:hidden bg-[#FF8400] border-t border-black/10 absolute w-full shadow-lg rounded-b-xl">
+    <div class="@NavMenuCssClass md:hidden bg-[#FF8400] border-t border-black/10 absolute w-full shadow-lg">
         <div class="px-2 pt-4 pb-6 space-y-4 sm:px-3 text-center flex flex-col items-center">
             <NavItem Href="meny" OnClick="ToggleNavMenu">Meny</NavItem>
             <img src="assets/burrito.png" alt="Burrito icon" class="nav-burrito-icon h-8 w-auto filter drop-shadow-md mx-2 opacity-80" />

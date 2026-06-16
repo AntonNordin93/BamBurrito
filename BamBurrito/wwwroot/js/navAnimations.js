@@ -5,21 +5,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const burritos = document.querySelectorAll('.nav-burrito-icon');
 
         navLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                burritos.forEach(burrito => {
-                    // Add animation class
-                    burrito.classList.add('animate-spin-bounce');
-                });
-            });
+            // Because Blazor recreates DOM elements, we store whether we've already attached the listener
+            // to avoid resetting the link node which destroys Blazors own event bindings
+            if (!link.dataset.hasHoverListener) {
+                link.dataset.hasHoverListener = 'true';
 
-            link.addEventListener('mouseleave', () => {
-                burritos.forEach(burrito => {
-                    // The CSS animation will finish its iteration or we can stop it
-                    setTimeout(() => {
-                        burrito.classList.remove('animate-spin-bounce');
-                    }, 500); // Give it time to finish spinning if we want
+                link.addEventListener('mouseenter', () => {
+                    burritos.forEach(burrito => {
+                        burrito.classList.remove('spin-burrito', 'animate-spin-bounce');
+                        // Force a reflow so the browser registers the removal
+                        void burrito.offsetWidth;
+                        // Add the animation class back
+                        burrito.classList.add('spin-burrito');
+                    });
                 });
-            });
+
+                link.addEventListener('mouseleave', () => {
+                    // Wait for the animation (1.2s now) then clear
+                    setTimeout(() => {
+                        burritos.forEach(burrito => {
+                            burrito.classList.remove('spin-burrito');
+                        });
+                    }, 1200); 
+                });
+            }
         });
     };
 
@@ -31,5 +40,5 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(document.body, { childList: true, subtree: true });
 
     // Initial setup
-    setupBurritoAnimations();
+    setTimeout(setupBurritoAnimations, 100);
 });
