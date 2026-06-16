@@ -73,4 +73,19 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
+// --- DATA SEEDING: SKAPA ÄGAREN AUTOMATISKT ---
+using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        await BamBurrito.Infrastructure.Data.DbSeeder.SeedAdminUserAsync(scope.ServiceProvider, logger);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Ett fel uppstod under seeding av databasen.");
+    }
+}
+// -------------------------------------------------
+
 app.Run();

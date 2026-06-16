@@ -1,45 +1,34 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
 
-<nav class="bg-[#FF8400] shadow-md w-full z-50 top-0 sticky">
+<nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-24">
+        <div class="flex justify-between items-center h-24 relative">
 
-            <!-- Logo Section -->
-            <div class="flex-shrink-0 flex items-center">
+            <!-- Logo Section (Left) -->
+            <div class="absolute left-4 md:left-0 flex-shrink-0 flex items-center">
                 <a href="" class="flex items-center gap-2 transform transition hover:scale-105 duration-300">
-                    <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-16 md:h-20 w-auto" />
+                    <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-16 md:h-20 w-auto filter drop-shadow-md" />
                 </a>
             </div>
 
-            <!-- Main Navigation Links (Desktop) -->
-            <div class="hidden md:flex md:space-x-4 items-center">
-                <NavItem Href="" Match="NavLinkMatch.All">Startsida</NavItem>
+            <!-- Main Navigation Links (Centered Desktop) -->
+            <div class="hidden md:flex w-full justify-center items-center space-x-3">
                 <NavItem Href="meny">Meny</NavItem>
-                <NavItem Href="blank">Ny plats</NavItem>
-                <NavItem Href="kontakt">Info</NavItem>
+                <div class="text-white text-xl mx-2 font-bold drop-shadow-md">★</div>
 
-                <AuthorizeView>
-                    <Authorized>
-                        <NavItem Href="Account/Manage">@context.User.Identity?.Name</NavItem>
-                        <form action="Account/Logout" method="post" class="inline">
-                            <AntiforgeryToken />
-                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                            <button type="submit" class="flex items-center px-4 py-2 text-sm font-bold text-black uppercase cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-110">
-                                Logga ut
-                            </button>
-                        </form>
-                    </Authorized>
-                    <NotAuthorized>
-                        <NavItem Href="Account/Login">Logga in</NavItem>
-                        <NavItem Href="Account/Register">Registrera</NavItem>
-                    </NotAuthorized>
-                </AuthorizeView>
+                <NavItem Href="platser">Platser</NavItem>
+                <div class="text-white text-xl mx-2 font-bold drop-shadow-md">★</div>
+
+                <NavItem Href="kontakt">Kontakt</NavItem>
+                <div class="text-white text-xl mx-2 font-bold drop-shadow-md">★</div>
+
+                <NavItem Href="om-oss">Om Oss</NavItem>
             </div>
 
             <!-- Hamburger Button (Mobile) -->
-            <div class="flex items-center md:hidden">
-                <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-2 rounded-md text-black hover:scale-110 transform transition-transform focus:outline-none">
+            <div class="absolute right-4 md:right-0 flex items-center">
+                <button type="button" @onclick="ToggleNavMenu" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-black hover:scale-110 transform transition-transform focus:outline-none">
                     <span class="sr-only">Öppna meny</span>
                     @if (collapseNavMenu)
                     {
@@ -63,28 +52,17 @@
 
     <!-- Mobile Navigation Menu -->
     <div class="@NavMenuCssClass md:hidden bg-[#FF8400] border-t border-black/10 absolute w-full shadow-lg">
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
-            <NavItem Href="" Match="NavLinkMatch.All" OnClick="ToggleNavMenu">Startsida</NavItem>
+        <div class="px-2 pt-4 pb-6 space-y-3 sm:px-3 text-center">
             <NavItem Href="meny" OnClick="ToggleNavMenu">Meny</NavItem>
-            <NavItem Href="blank" OnClick="ToggleNavMenu">Ny plats</NavItem>
-            <NavItem Href="kontakt" OnClick="ToggleNavMenu">Info</NavItem>
+            <div class="text-white text-xl font-bold">★</div>
 
-            <AuthorizeView>
-                <Authorized>
-                    <NavItem Href="Account/Manage" OnClick="ToggleNavMenu">@context.User.Identity?.Name</NavItem>
-                    <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="flex items-center w-full justify-center px-4 py-2 text-sm font-bold text-black uppercase cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-110">
-                            Logga ut
-                        </button>
-                    </form>
-                </Authorized>
-                <NotAuthorized>
-                    <NavItem Href="Account/Login" OnClick="ToggleNavMenu">Logga in</NavItem>
-                    <NavItem Href="Account/Register" OnClick="ToggleNavMenu">Registrera</NavItem>
-                </NotAuthorized>
-            </AuthorizeView>
+            <NavItem Href="platser" OnClick="ToggleNavMenu">Platser</NavItem>
+            <div class="text-white text-xl font-bold">★</div>
+
+            <NavItem Href="kontakt" OnClick="ToggleNavMenu">Kontakt</NavItem>
+            <div class="text-white text-xl font-bold">★</div>
+
+            <NavItem Href="om-oss" OnClick="ToggleNavMenu">Om Oss</NavItem>
         </div>
     </div>
 </nav>
