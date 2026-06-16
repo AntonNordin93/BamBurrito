@@ -15,9 +15,8 @@ html, body {
 }
 
 @keyframes waddle {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(-25deg) scale(1.15); }
-    75% { transform: rotate(25deg) scale(1.15); }
+    0%, 100% { transform: rotate(-20deg) scale(1.1); }
+    50% { transform: rotate(20deg) scale(1.1); }
 }
 
 .font-bangers {
