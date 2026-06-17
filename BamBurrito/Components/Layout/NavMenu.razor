@@ -4,9 +4,9 @@
 
 @rendermode InteractiveServer
 
-<nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky border-b-2 border-[#e64e1c]">
-    <div class="w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 mx-auto">
-        <div class="flex justify-between items-center h-24 relative">
+<nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky relative h-24">
+    <div class="w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 mx-auto h-full relative z-20">
+        <div class="flex justify-between items-center h-full relative">
 
             <div class="flex-shrink-0 flex items-center pl-2 md:pl-4">
                 <a href="" class="flex items-center gap-2 transform transition hover:scale-105 duration-300">
@@ -28,7 +28,7 @@
                 <img src="assets/chili.png" alt="Chili icon" class="nav-burrito-icon h-16 w-16 object-contain filter drop-shadow-md opacity-80" />
             </div>
 
-            <div class="hidden md:flex absolute right-0 flex-col items-center justify-center space-y-2 h-full z-10">
+            <div class="hidden md:flex absolute right-0 flex-col items-center justify-center space-y-2 h-full z-20">
                 <a href="https://www.facebook.com/profile.php?id=61588663281337" target="_blank"
                    class="text-white hover:scale-110 transform transition-all duration-300 ease-in-out filter drop-shadow-sm">
                     <span class="sr-only">Facebook</span>
@@ -46,7 +46,7 @@
                 </a>
             </div>
 
-            <div class="absolute right-0 flex items-center md:hidden">
+            <div class="absolute right-0 flex items-center md:hidden z-30">
                 <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-3 rounded-md text-white hover:scale-110 transform transition-transform focus:outline-none relative z-50">
                     <span class="sr-only">Öppna meny</span>
                     @if (collapseNavMenu)
@@ -67,38 +67,48 @@
         </div>
     </div>
 
-    <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none translate-y-[-10px]" : "opacity-100 visible pointer-events-auto translate-y-0") transition-all duration-300 ease-in-out md:hidden absolute w-full left-0 top-[100%] bg-gradient-to-b from-[#FF8400] to-[#e67500] shadow-xl z-50 overflow-hidden rounded-b-2xl border-b-2 border-x-2 border-[#e64e1c]">
+    <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none translate-y-[-10px]" : "opacity-100 visible pointer-events-auto translate-y-0") transition-all duration-300 ease-in-out md:hidden absolute w-full left-0 top-[100%] bg-gradient-to-b from-[#FF8400] to-[#e67500] shadow-xl z-50 overflow-hidden rounded-b-2xl border-b-2 border-x-2 border-white">
         <ul class="flex flex-col w-full px-6 py-6 space-y-3">
-
             <li class="flex items-center justify-between border-b border-yellow-300/30 pb-2">
                 <NavItem Href="meny" OnClick="CloseNavMenu">Meny</NavItem>
                 <div class="w-28 h-20 flex items-center justify-center">
                     <img src="assets/burrito.png" alt="Burrito icon" class="h-10 w-10 object-contain filter drop-shadow-md opacity-90" />
                 </div>
             </li>
-
             <li class="flex items-center justify-between border-b border-yellow-300/30 pb-2">
                 <NavItem Href="platser" OnClick="CloseNavMenu">Platser</NavItem>
                 <div class="w-28 h-20 flex items-center justify-center">
                     <img src="assets/lime.png" alt="Lime icon" class="h-20 w-20 object-contain filter drop-shadow-md opacity-90" />
                 </div>
             </li>
-
             <li class="flex items-center justify-between border-b border-yellow-300/30 pb-2">
                 <NavItem Href="kontakt" OnClick="CloseNavMenu">Kontakt</NavItem>
                 <div class="w-28 h-20 flex items-center justify-center">
                     <img src="assets/sombrero.png" alt="Sombrero icon" class="h-20 w-24 object-contain filter drop-shadow-md opacity-90" />
                 </div>
             </li>
-
             <li class="flex items-center justify-between pb-2">
                 <NavItem Href="om-oss" OnClick="CloseNavMenu">Om Oss</NavItem>
                 <div class="w-28 h-20 flex items-center justify-center">
                     <img src="assets/chili.png" alt="Chili icon" class="h-16 w-16 object-contain filter drop-shadow-md opacity-90" />
                 </div>
             </li>
-
         </ul>
+    </div>
+
+    <div class="absolute bottom-0 left-0 w-full translate-y-[100%] -mt-1 pointer-events-none z-10 overflow-visible h-8 select-none">
+        <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+            <defs>
+                <filter id="rugged-top">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+                </filter>
+            </defs>
+            <path d="M0,-20 V20 L40,11 L80,26 L125,9 L170,24 L215,12 L260,27 L305,10 L350,25 L400,12 L450,28 L500,11 L550,26 L600,13 L650,27 L700,10 L750,25 L800,12 L850,28 L900,11 L950,26 L1000,16 V-20 Z"
+                  fill="#FF8400" filter="url(#rugged-top)" />
+            <path d="M0,20 L40,11 L80,26 L125,9 L170,24 L215,12 L260,27 L305,10 L350,25 L400,12 L450,28 L500,11 L550,26 L600,13 L650,27 L700,10 L750,25 L800,12 L850,28 L900,11 L950,26 L1000,16"
+                  stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+        </svg>
     </div>
 </nav>
 
@@ -111,6 +121,7 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
+    // DENNA METOD ÄR TILLBAKA OCH FIXAR DITT FEL!
     private void CloseNavMenu()
     {
         collapseNavMenu = true;
