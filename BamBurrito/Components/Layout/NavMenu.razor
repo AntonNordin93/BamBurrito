@@ -1,8 +1,4 @@
-﻿@implements IDisposable
-@inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
-
-@rendermode InteractiveServer
+﻿@rendermode InteractiveServer
 
 <nav class="bg-[#FF8400] shadow-[0_4px_15px_-3px_rgba(0,0,0,0.5)] w-full z-50 top-0 sticky relative h-24">
     <div class="w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 mx-auto h-full relative z-20">
@@ -104,44 +100,8 @@
                     <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
                 </filter>
             </defs>
-            <path d="M0,-20 V20 L40,11 L80,26 L125,9 L170,24 L215,12 L260,27 L305,10 L350,25 L400,12 L450,28 L500,11 L550,26 L600,13 L650,27 L700,10 L750,25 L800,12 L850,28 L900,11 L950,26 L1000,16 V-20 Z"
-                  fill="#FF8400" filter="url(#rugged-top)" />
-            <path d="M0,20 L40,11 L80,26 L125,9 L170,24 L215,12 L260,27 L305,10 L350,25 L400,12 L450,28 L500,11 L550,26 L600,13 L650,27 L700,10 L750,25 L800,12 L850,28 L900,11 L950,26 L1000,16"
-                  stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+            <path d="M0,-20 V20 L40,11 L80,26 L125,9 L170,24 L215,12 L260,27 L305,10 L350,25 L400,12 L450,28 L500,11 L550,26 L600,13 L650,27 L700,10 L750,25 L800,12 L850,28 L900,11 L950,26 L1000,16 V-20 Z" fill="#FF8400" filter="url(#rugged-top)" />
+            <path d="M0,20 L40,11 L80,26 L125,9 L170,24 L215,12 L260,27 L305,10 L350,25 L400,12 L450,28 L500,11 L550,26 L600,13 L650,27 L700,10 L750,25 L800,12 L850,28 L900,11 L950,26 L1000,16" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
         </svg>
     </div>
 </nav>
-
-@code {
-    private string? currentUrl;
-    private bool collapseNavMenu = true;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
-    // DENNA METOD ÄR TILLBAKA OCH FIXAR DITT FEL!
-    private void CloseNavMenu()
-    {
-        collapseNavMenu = true;
-    }
-
-    protected override void OnInitialized()
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
-    }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        collapseNavMenu = true;
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
-}
