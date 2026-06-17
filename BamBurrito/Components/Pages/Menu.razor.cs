@@ -29,5 +29,16 @@ namespace BamBurrito.Components.Pages
                 new MenuItem { Id = 9, Name = "Jarritos Premium", Price = 29, Category = "Dryck", Description = "Mexikansk kultläsk – Välj mellan Mango, Jordgubb eller Ananas.", IsAvailable = true }
             };
         }
+
+        // Returnerar helt unika sicksack-banor baserat på id för asymmetriska former på prislapparna
+        protected string GetPricePath(int id)
+        {
+            return (id % 3) switch
+            {
+                0 => "M 6,8 L 35,4 L 65,12 L 95,5 L 114,8 L 115,22 L 112,35 L 114,44 L 95,42 L 65,45 L 35,41 L 7,44 L 4,30 L 7,18 Z",
+                1 => "M 4,5 L 40,8 L 75,3 L 100,6 L 116,4 L 113,18 L 115,32 L 112,46 L 90,43 L 60,45 L 25,42 L 5,45 L 6,25 L 4,12 Z",
+                _ => "M 7,4 L 30,5 L 60,3 L 90,7 L 113,5 L 116,20 L 113,36 L 115,43 L 95,45 L 65,41 L 35,44 L 8,42 L 4,28 L 5,15 Z"
+            };
+        }
     }
 }
