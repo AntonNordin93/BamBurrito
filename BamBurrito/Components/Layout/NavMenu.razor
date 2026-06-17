@@ -11,7 +11,7 @@
                 </a>
             </div>
 
-            <!-- Desktop Navigation (Pekar på menu) -->
+            <!-- Desktop Navigation -->
             <div class="hidden md:flex flex-grow justify-center items-center space-x-2">
                 <NavItem Href="menu">Meny</NavItem>
                 <img src="assets/burrito.png" alt="Burrito icon" class="nav-burrito-icon h-10 w-10 object-contain filter drop-shadow-md opacity-80" />
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <!-- Mobile Menu Dropdown (Nu fixad till Href="menu") -->
+    <!-- Mobile Menu Dropdown -->
     <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none translate-y-[-10px]" : "opacity-100 visible pointer-events-auto translate-y-0") transition-all duration-300 ease-in-out md:hidden absolute w-full left-0 top-[100%] bg-gradient-to-b from-[#FF8400] to-[#e67500] shadow-xl z-50 overflow-hidden rounded-b-2xl border-b-2 border-x-2 border-white">
         <ul class="flex flex-col w-full px-6 py-6 space-y-3">
             <li class="flex items-center justify-between border-b border-yellow-300/30 pb-2">
