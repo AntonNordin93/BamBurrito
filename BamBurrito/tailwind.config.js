@@ -7,7 +7,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                bamorange: '#e64e1c',
+                bamorange: '#FF8400', // Din exakta, krispiga orangea signaturfärg!
             },
             fontFamily: {
                 bangers: ['Bangers', 'system-ui'],
