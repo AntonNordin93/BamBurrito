@@ -1,7 +1,8 @@
 ﻿@page "/menu"
 <PageTitle>Menu - BAM! Burrito</PageTitle>
 
-<svg class="absolute w-0 h-0 hidden" aria-hidden="true">
+<!-- FIX: Osynlig SVG-behållare som garanterar att filtren överlever och körs överallt! -->
+<svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
     <defs>
         <filter id="rugged-top" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
@@ -36,9 +37,16 @@
                         @categoryGroup.Key
                     </h2>
 
-                    <div class="flex-grow h-8 overflow-visible pointer-events-none mt-1">
-                        <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+                    <div class="flex-grow overflow-visible pointer-events-none mt-1">
+                        <!-- SKRÄDDARSYDD FÖR DESKTOP: Den vanliga sicksacken, dold på mobilen -->
+                        <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="hidden md:block w-full h-8 overflow-visible">
                             <path d="M0,20 L25,10 L50,30 L75,10 L100,30 L125,10 L150,30 L175,10 L200,30 L225,10 L250,30 L275,10 L300,30 L325,10 L350,30 L375,10 L400,30 L425,10 L450,30 L475,10 L500,30 L525,10 L550,30 L575,10 L600,30 L625,10 L650,30 L675,10 L700,30 L725,10 L750,30 L775,10 L800,30 L825,10 L850,30 L875,10 L900,30 L925,10 L950,30 L975,10 L1000,20"
+                                  stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                        </svg>
+
+                        <!-- SKRÄDDARSYDD FÖR MOBIL: Mjukare och bredare svängar i själva ritningen (inte hoptryckt), så filtret ryms snyggt! -->
+                        <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="block md:hidden w-full h-6 overflow-visible">
+                            <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
                                   stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
                         </svg>
                     </div>
@@ -49,12 +57,12 @@
                     {
                         <div class="relative group transition-all duration-300 min-h-[240px] flex flex-col p-6 md:p-8 justify-between @(item.IsAvailable ? "hover:-translate-y-2" : "opacity-70")">
 
-                            <!-- MATKORTENS RAMAR: Byggda med tätt segmenterad sicksack-geometri för äkta handritad effekt -->
+                            <!-- RAMAR FÖR MATKORTEN -->
                             <div class="absolute inset-0 z-0 overflow-visible pointer-events-none -m-1">
                                 <svg viewBox="0 0 300 200" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                                    <path d="M 10,10 L 40,6 L 80,14 L 120,6 L 160,14 L 200,6 L 240,14 L 290,10 L 294,40 L 286,80 L 294,120 L 286,160 L 290,190 L 250,186 L 210,194 L 170,186 L 130,194 L 90,186 L 50,194 L 10,190 L 14,150 L 6,110 L 14,70 L 6,35 Z"
+                                    <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
                                           fill="#0b0f19" filter="url(#rugged-top)" class="shadow-2xl" />
-                                    <path d="M 10,10 L 40,6 L 80,14 L 120,6 L 160,14 L 200,6 L 240,14 L 290,10 L 294,40 L 286,80 L 294,120 L 286,160 L 290,190 L 250,186 L 210,194 L 170,186 L 130,194 L 90,186 L 50,194 L 10,190 L 14,150 L 6,110 L 14,70 L 6,35 Z"
+                                    <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
                                           fill="none"
                                           stroke="@(item.IsAvailable ? "#FF8400" : "#4b5563")"
                                           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)"

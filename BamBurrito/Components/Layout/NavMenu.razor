@@ -4,12 +4,14 @@
     <div class="w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 mx-auto h-full relative z-20">
         <div class="flex justify-between items-center h-full relative">
 
+            <!-- Logo -->
             <div class="flex-shrink-0 flex items-center pl-2 md:pl-4">
                 <a href="" class="flex items-center gap-2 transform transition hover:scale-105 duration-300">
                     <img src="assets/Logo.png" alt="BamBurrito Logo" class="h-16 md:h-20 w-auto filter drop-shadow-md" />
                 </a>
             </div>
 
+            <!-- Desktop Navigation -->
             <div class="hidden md:flex flex-grow justify-center items-center space-x-2">
                 <NavItem Href="menu">Meny</NavItem>
                 <img src="assets/burrito.png" alt="Burrito icon" class="nav-burrito-icon h-10 w-10 object-contain filter drop-shadow-md opacity-80" />
@@ -24,6 +26,7 @@
                 <img src="assets/chili.png" alt="Chili icon" class="nav-burrito-icon h-16 w-16 object-contain filter drop-shadow-md opacity-80" />
             </div>
 
+            <!-- Social Media Icons -->
             <div class="hidden md:flex absolute right-0 flex-col items-center justify-center space-y-2 h-full z-20">
                 <a href="https://www.facebook.com/profile.php?id=61588663281337" target="_blank" class="text-white hover:scale-110 transform transition-all duration-300 ease-in-out filter drop-shadow-sm">
                     <span class="sr-only">Facebook</span>
@@ -35,6 +38,7 @@
                 </a>
             </div>
 
+            <!-- Mobile Hamburger Button -->
             <div class="absolute right-0 flex items-center md:hidden z-30">
                 <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-3 rounded-md text-white hover:scale-110 transform transition-transform focus:outline-none relative z-50">
                     <span class="sr-only">Öppna meny</span>
@@ -52,12 +56,13 @@
         </div>
     </div>
 
-    <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none translate-x-full" : "opacity-100 visible pointer-events-auto translate-x-0") transition-all duration-300 ease-in-out md:hidden absolute w-[240px] right-0 top-[100%] h-[calc(100vh-6rem)] z-50 overflow-visible pb-6">
+    <!-- DRAWER FRÅN HÖGER -->
+    <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none translate-x-full" : "opacity-100 visible pointer-events-auto translate-x-0") transition-all duration-300 ease-in-out md:hidden absolute w-[260px] right-0 top-[100%] h-auto z-50 overflow-visible pb-8">
 
-        <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
-            <svg viewBox="0 0 240 800" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+        <div class="absolute inset-0 z-0 overflow-visible pointer-events-none w-[calc(100%+30px)]">
+            <svg viewBox="0 0 260 300" preserveAspectRatio="none" class="w-full h-full overflow-visible">
                 <defs>
-                    <filter id="rugged-drawer">
+                    <filter id="rugged-drawer-unique" x="-30%" y="-30%" width="160%" height="160%">
                         <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
                         <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
                     </filter>
@@ -67,76 +72,67 @@
                     </linearGradient>
                 </defs>
 
-                <path d="M 240,-5 L 12,-5 L 12,0 L 9,50 L 14,100 L 10,150 L 15,200 L 9,250 L 14,300 L 10,350 L 15,400 L 9,450 L 14,500 L 10,550 L 15,600 L 9,650 L 14,700 L 10,750 L 12,800 L 40,793 L 80,805 L 125,792 L 170,806 L 210,793 L 240,800 Z"
-                      fill="url(#mobile-nav-grad)" filter="url(#rugged-drawer)" />
+                <path d="M 400,0 L 400,350 L 260,300 L 210,296 L 170,303 L 125,296 L 80,303 L 40,296 L 12,300 L 10,275 L 14,250 L 9,225 L 15,200 L 10,175 L 14,150 L 9,125 L 15,100 L 10,75 L 14,50 L 9,25 L 12,0 Z"
+                      fill="url(#mobile-nav-grad)" filter="url(#rugged-drawer-unique)" />
 
-                <path d="M 12,-5 L 12,0 L 9,50 L 14,100 L 10,150 L 15,200 L 9,250 L 14,300 L 10,350 L 15,400 L 9,450 L 14,500 L 10,550 L 15,600 L 9,650 L 14,700 L 10,750 L 12,800 L 40,793 L 80,805 L 125,792 L 170,806 L 210,793 L 240,800"
-                      fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-drawer)" />
+                <path d="M 12,0 L 9,25 L 14,50 L 10,75 L 15,100 L 9,125 L 14,150 L 10,175 L 15,200 L 9,225 L 14,250 L 10,275 L 12,300"
+                      fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-drawer-unique)" />
+
+                <path d="M 12,300 L 40,296 L 80,303 L 125,296 L 170,303 L 210,296 L 260,300"
+                      fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-drawer-unique)" />
             </svg>
         </div>
 
-        <ul class="relative z-10 flex flex-col w-full pl-6 pr-4 pt-4 space-y-3">
+        <!-- ... (Översta delen av filen förblir oförändrad) ... -->
+
+        <ul class="relative z-10 flex flex-col w-full pl-4 pr-4 pt-4 space-y-4">
             <li class="flex flex-col w-full">
-                <div class="flex items-center justify-between w-full">
-                    <div class="text-[1.1rem]">
-                        <NavItem Href="menu" OnClick="CloseNavMenu">Meny</NavItem>
-                    </div>
-                    <div class="w-16 h-12 flex items-center justify-center">
-                        <img src="assets/burrito.png" alt="Burrito icon" class="h-8 w-8 object-contain filter drop-shadow-md opacity-90" />
+                <div class="flex items-center justify-between w-full pl-2 pr-2">
+                    <div class="text-[1.1rem]"><NavItem Href="menu" OnClick="CloseNavMenu">Meny</NavItem></div>
+                    <!-- Alla containrar är identiska 12x12 -->
+                    <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                        <!-- Alla ikoner har samma klasser, vi ändrar bara 'scale' för att de ska se lika stora ut -->
+                        <img src="assets/burrito.png" alt="Burrito" class="w-10 h-10 object-contain filter drop-shadow-md opacity-90" />
                     </div>
                 </div>
-                <div class="w-[75%] mx-auto h-2 overflow-visible pointer-events-none mt-1 opacity-40">
-                    <svg viewBox="0 0 300 20" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                        <path d="M0,10 L15,3 L30,17 L45,3 L60,17 L75,3 L90,17 L105,3 L120,17 L135,3 L150,17 L165,3 L180,17 L195,3 L210,17 L225,3 L240,17 L255,3 L270,17 L285,3 L300,10"
-                              stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-drawer)" />
-                    </svg>
+                <div class="w-[85%] mx-auto h-3 overflow-visible pointer-events-none mt-1 opacity-40">
+                    <svg viewBox="0 0 300 20" preserveAspectRatio="none" class="w-full h-full"><path d="M0,10 L15,4 L30,16 L45,4 L60,16 L75,4 L90,16 L105,4 L120,16 L135,4 L150,16 L165,4 L180,16 L195,4 L210,16 L225,4 L240,16 L255,4 L270,16 L285,4 L300,10" stroke="white" stroke-width="3" fill="none" /></svg>
                 </div>
             </li>
+
             <li class="flex flex-col w-full">
-                <div class="flex items-center justify-between w-full">
-                    <div class="text-[1.1rem]">
-                        <NavItem Href="platser" OnClick="CloseNavMenu">Platser</NavItem>
-                    </div>
-                    <div class="w-16 h-12 flex items-center justify-center">
-                        <img src="assets/lime.png" alt="Lime icon" class="h-14 w-14 object-contain filter drop-shadow-md opacity-90" />
+                <div class="flex items-center justify-between w-full pl-2 pr-2">
+                    <div class="text-[1.1rem]"><NavItem Href="platser" OnClick="CloseNavMenu">Platser</NavItem></div>
+                    <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                        <img src="assets/lime.png" alt="Lime" class="w-10 h-10 object-contain filter drop-shadow-md opacity-90" />
                     </div>
                 </div>
-                <div class="w-[75%] mx-auto h-2 overflow-visible pointer-events-none mt-1 opacity-40">
-                    <svg viewBox="0 0 300 20" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                        <path d="M0,10 L15,3 L30,17 L45,3 L60,17 L75,3 L90,17 L105,3 L120,17 L135,3 L150,17 L165,3 L180,17 L195,3 L210,17 L225,3 L240,17 L255,3 L270,17 L285,3 L300,10"
-                              stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-drawer)" />
-                    </svg>
-                </div>
+                <div class="w-[85%] mx-auto h-3 overflow-visible pointer-events-none mt-1 opacity-40"><svg viewBox="0 0 300 20" preserveAspectRatio="none" class="w-full h-full"><path d="M0,10 L15,4 L30,16 L45,4 L60,16 L75,4 L90,16 L105,4 L120,16 L135,4 L150,16 L165,4 L180,16 L195,4 L210,16 L225,4 L240,16 L255,4 L270,16 L285,4 L300,10" stroke="white" stroke-width="3" fill="none" /></svg></div>
             </li>
+
             <li class="flex flex-col w-full">
-                <div class="flex items-center justify-between w-full">
-                    <div class="text-[1.1rem]">
-                        <NavItem Href="kontakt" OnClick="CloseNavMenu">Kontakt</NavItem>
-                    </div>
-                    <div class="w-16 h-12 flex items-center justify-center">
-                        <img src="assets/sombrero.png" alt="Sombrero icon" class="h-14 w-16 object-contain filter drop-shadow-md opacity-90" />
+                <div class="flex items-center justify-between w-full pl-2 pr-2">
+                    <div class="text-[1.1rem]"><NavItem Href="kontakt" OnClick="CloseNavMenu">Kontakt</NavItem></div>
+                    <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                        <!-- Sombrero får scale-150 för att fylla ut containern optiskt lika stort som de andra -->
+                        <img src="assets/sombrero.png" alt="Sombrero" class="w-10 h-10 object-contain filter drop-shadow-md opacity-90 scale-150" />
                     </div>
                 </div>
-                <div class="w-[75%] mx-auto h-2 overflow-visible pointer-events-none mt-1 opacity-40">
-                    <svg viewBox="0 0 300 20" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                        <path d="M0,10 L15,3 L30,17 L45,3 L60,17 L75,3 L90,17 L105,3 L120,17 L135,3 L150,17 L165,3 L180,17 L195,3 L210,17 L225,3 L240,17 L255,3 L270,17 L285,3 L300,10"
-                              stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-drawer)" />
-                    </svg>
-                </div>
+                <div class="w-[85%] mx-auto h-3 overflow-visible pointer-events-none mt-1 opacity-40"><svg viewBox="0 0 300 20" preserveAspectRatio="none" class="w-full h-full"><path d="M0,10 L15,4 L30,16 L45,4 L60,16 L75,4 L90,16 L105,4 L120,16 L135,4 L150,16 L165,4 L180,16 L195,4 L210,16 L225,4 L240,16 L255,4 L270,16 L285,4 L300,10" stroke="white" stroke-width="3" fill="none" /></svg></div>
             </li>
+
             <li class="flex flex-col w-full">
-                <div class="flex items-center justify-between w-full">
-                    <div class="text-[1.1rem]">
-                        <NavItem Href="om-oss" OnClick="CloseNavMenu">Om Oss</NavItem>
-                    </div>
-                    <div class="w-16 h-12 flex items-center justify-center">
-                        <img src="assets/chili.png" alt="Chili icon" class="h-12 w-12 object-contain filter drop-shadow-md opacity-90" />
+                <div class="flex items-center justify-between w-full pl-2 pr-2">
+                    <div class="text-[1.1rem]"><NavItem Href="om-oss" OnClick="CloseNavMenu">Om Oss</NavItem></div>
+                    <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                        <img src="assets/chili.png" alt="Chili" class="w-10 h-10 object-contain filter drop-shadow-md opacity-90" />
                     </div>
                 </div>
             </li>
         </ul>
     </div>
-
+    <!-- ... (Resten av filen) ... -->
+    <!-- DIN ORIGINAL-BORDER FÖR NAVBAREN -->
     <div class="absolute bottom-0 left-0 w-full translate-y-[100%] -mt-1 pointer-events-none z-10 overflow-visible h-8 select-none">
         <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="w-full h-full overflow-visible">
             <defs>
