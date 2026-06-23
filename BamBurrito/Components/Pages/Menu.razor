@@ -1,5 +1,4 @@
 ﻿@page "/menu"
-
 <PageTitle>Menu - BAM! Burrito</PageTitle>
 
 <svg class="absolute w-0 h-0 hidden" aria-hidden="true">
@@ -50,11 +49,12 @@
                     {
                         <div class="relative group transition-all duration-300 min-h-[240px] flex flex-col p-6 md:p-8 justify-between @(item.IsAvailable ? "hover:-translate-y-2" : "opacity-70")">
 
+                            <!-- MATKORTENS RAMAR: Byggda med tätt segmenterad sicksack-geometri för äkta handritad effekt -->
                             <div class="absolute inset-0 z-0 overflow-visible pointer-events-none -m-1">
                                 <svg viewBox="0 0 300 200" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                                    <path d="M 10,10 L 40,10 L 70,10 L 100,10 L 130,10 L 160,10 L 190,10 L 220,10 L 250,10 L 290,10 L 290,40 L 290,70 L 290,100 L 290,130 L 290,160 L 290,190 L 250,190 L 220,190 L 190,190 L 160,190 L 130,190 L 100,190 L 70,190 L 40,190 L 10,190 L 10,160 L 10,130 L 10,100 L 10,70 L 10,40 Z"
+                                    <path d="M 10,10 L 40,6 L 80,14 L 120,6 L 160,14 L 200,6 L 240,14 L 290,10 L 294,40 L 286,80 L 294,120 L 286,160 L 290,190 L 250,186 L 210,194 L 170,186 L 130,194 L 90,186 L 50,194 L 10,190 L 14,150 L 6,110 L 14,70 L 6,35 Z"
                                           fill="#0b0f19" filter="url(#rugged-top)" class="shadow-2xl" />
-                                    <path d="M 10,10 L 40,10 L 70,10 L 100,10 L 130,10 L 160,10 L 190,10 L 220,10 L 250,10 L 290,10 L 290,40 L 290,70 L 290,100 L 290,130 L 290,160 L 290,190 L 250,190 L 220,190 L 190,190 L 160,190 L 130,190 L 100,190 L 70,190 L 40,190 L 10,190 L 10,160 L 10,130 L 10,100 L 10,70 L 10,40 Z"
+                                    <path d="M 10,10 L 40,6 L 80,14 L 120,6 L 160,14 L 200,6 L 240,14 L 290,10 L 294,40 L 286,80 L 294,120 L 286,160 L 290,190 L 250,186 L 210,194 L 170,186 L 130,194 L 90,186 L 50,194 L 10,190 L 14,150 L 6,110 L 14,70 L 6,35 Z"
                                           fill="none"
                                           stroke="@(item.IsAvailable ? "#FF8400" : "#4b5563")"
                                           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)"
