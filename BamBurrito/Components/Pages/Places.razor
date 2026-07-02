@@ -1,0 +1,171 @@
+﻿@page "/places"
+@rendermode InteractiveServer
+@using BamBurrito.Core.Entities
+@using System.Globalization
+
+<PageTitle>Places - BAM! Burrito</PageTitle>
+
+<svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
+    <defs>
+        <filter id="rugged-top" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </defs>
+</svg>
+
+<div class="w-full min-h-screen bg-gray-900 text-white pb-32 relative overflow-hidden">
+
+    <div class="max-w-4xl mx-auto text-center pt-12 pb-8 px-4 relative z-10">
+        <span class="text-bamorange uppercase tracking-widest font-trueno text-xs block mb-2 font-bold">Här rullar vagnen</span>
+        <h1 class="text-5xl md:text-7xl font-trueno uppercase tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+            Hitta <span class="text-bamorange">Oss</span>
+        </h1>
+        <div class="w-24 h-1 bg-bamorange mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        <div class="flex items-center gap-4 mb-6 select-none">
+            <h2 class="text-2xl font-trueno uppercase tracking-wider text-white drop-shadow whitespace-nowrap">
+                Kommande Stopp
+            </h2>
+            <div class="flex-grow overflow-visible pointer-events-none mt-1">
+                <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="hidden md:block w-full h-8 overflow-visible">
+                    <path d="M0,20 L25,10 L50,30 L75,10 L100,30 L125,10 L150,30 L175,10 L200,30 L225,10 L250,30 L275,10 L300,30 L325,10 L350,30 L375,10 L400,30 L425,10 L450,30 L475,10 L500,30 L525,10 L550,30 L575,10 L600,30 L625,10 L650,30 L675,10 L700,30 L725,10 L750,30 L775,10 L800,30 L825,10 L850,30 L875,10 L900,30 L925,10 L950,30 L975,10 L1000,20"
+                          stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                </svg>
+                <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="block md:hidden w-full h-6 overflow-visible">
+                    <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
+                          stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded border border-gray-700 p-4 md:p-8 shadow-2xl">
+
+            <div class="flex items-center justify-between mb-8">
+                <button type="button" @onclick="PreviousMonth" class="bg-gray-900 border border-bamorange text-white hover:bg-bamorange hover:text-gray-900 p-2 md:p-3 rounded transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h2 class="text-2xl md:text-4xl font-trueno uppercase tracking-widest text-white drop-shadow select-none">
+                    @MonthName(currentMonth) <span class="text-bamorange">@currentYear</span>
+                </h2>
+                <button type="button" @onclick="NextMonth" class="bg-gray-900 border border-bamorange text-white hover:bg-bamorange hover:text-gray-900 p-2 md:p-3 rounded transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+
+            <div class="text-center mt-2 mb-6">
+                <span class="inline-block bg-gray-900 border border-bamorange text-white font-trueno text-[10px] md:text-sm uppercase tracking-widest px-4 md:px-6 py-2 md:py-3 rounded-full shadow-md animate-pulse">
+                    👆 Tryck på en fylld ruta för att hitta dit!
+                </span>
+            </div>
+
+            <div class="grid grid-cols-7 gap-1 md:gap-2 mb-2 select-none">
+                @foreach (var day in new[] { "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön" })
+                {
+                    <div class="text-center font-trueno text-gray-400 text-xs md:text-sm uppercase tracking-widest pb-1">@day</div>
+                }
+            </div>
+
+            <div class="grid grid-cols-7 gap-1 md:gap-2">
+                @{
+                    var firstDay = new DateTime(currentYear, currentMonth, 1);
+                    var daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+                    var offset = ((int)firstDay.DayOfWeek + 6) % 7;
+
+                    // Tomma rutor för dagar innan månaden börjar
+                    for (int i = 0; i < offset; i++)
+                    {
+                        <div class="h-12 md:h-16 bg-gray-900 rounded border border-bamorange opacity-30 pointer-events-none"></div>
+                    }
+
+                    // Skapa alla dagarna i månaden
+                    for (int day = 1; day <= daysInMonth; day++)
+                    {
+                        var currentDate = new DateTime(currentYear, currentMonth, day);
+                        var hasEvents = GetEventsForDay(day).Any();
+                        var isSelected = selectedDate.HasValue && selectedDate.Value.Date == currentDate.Date;
+
+                        // Färglogik: Bokat = Helt orange. Inte bokat = Grå med orange ram.
+                        var bgClass = hasEvents ? "bg-bamorange text-gray-900" : "bg-gray-900 text-gray-300";
+                        var borderClass = isSelected ? "border-2 border-white scale-105 shadow-[0_0_15px_rgba(255,132,0,0.6)] z-10 relative" : "border border-bamorange";
+                        var cursorClass = hasEvents ? "cursor-pointer hover:scale-105 hover:bg-orange-600 hover:text-white" : "cursor-pointer opacity-70 hover:bg-gray-700";
+
+                        <div @onclick="() => SelectDate(currentDate.Day)" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 @bgClass @borderClass @cursorClass select-none">
+                            <span class="font-trueno font-bold text-lg md:text-2xl">@day</span>
+                        </div>
+                    }
+                }
+            </div>
+
+            @if (selectedDate.HasValue)
+            {
+                var selectedEvents = GetEventsForDay(selectedDate.Value.Day).ToList();
+
+                <div class="mt-8 pt-6 border-t border-gray-700 animate-fade-in-up">
+                    <h3 class="text-2xl font-trueno uppercase tracking-widest text-bamorange mb-6 text-center">
+                        Schema för @selectedDate.Value.ToString("dd MMMM", new CultureInfo("sv-SE"))
+                    </h3>
+
+                    @if (selectedEvents.Any())
+                    {
+                        <div class="space-y-4">
+                            @foreach (var ev in selectedEvents)
+                            {
+                                <div class="bg-gray-900 border border-bamorange p-5 rounded-lg flex flex-col md:flex-row justify-between items-center gap-6 shadow-md">
+
+                                    <div class="text-center md:text-left w-full">
+                                        <span class="text-bamorange font-mono font-bold text-lg block mb-1">
+                                            @ev.StartTime.ToString("HH:mm") - @ev.EndTime.ToString("HH:mm")
+                                        </span>
+                                        <h4 class="text-2xl font-trueno uppercase text-white mb-1">@ev.Title</h4>
+                                        <span class="text-sm font-trueno uppercase tracking-widest text-gray-400 block mb-2 border-l-2 border-gray-600 pl-2 mx-auto md:mx-0 w-fit">
+                                            @ev.Address
+                                        </span>
+                                        @if (!string.IsNullOrEmpty(ev.Description))
+                                        {
+                                            <p class="text-gray-300 text-sm italic">"@ev.Description"</p>
+                                        }
+                                    </div>
+
+                                    <a href="https://www.google.com/maps/search/?api=1&query=@(Uri.EscapeDataString(ev.Address + " " + ev.Title))"
+                                       target="_blank"
+                                       class="bg-bamorange text-[#0b0f19] font-trueno font-black uppercase tracking-widest px-8 py-4 rounded hover:bg-orange-600 hover:text-white transition-colors w-full md:w-auto text-center whitespace-nowrap shadow-lg shrink-0">
+                                        Hitta Hit →
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-center">
+                            <p class="text-gray-400 font-trueno uppercase tracking-wider text-sm">Inga bokade stopp denna dag.</p>
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .animate-fade-in-up {
+        animation: fadeInUp 0.4s ease-out forwards;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
