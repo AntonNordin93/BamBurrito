@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class="bg-gray-800 rounded border border-gray-700 p-4 md:p-8 shadow-2xl">
+        <div class="bg-gray-800 rounded border border-bamorange p-4 md:p-8 shadow-2xl">
 
             <div class="flex items-center justify-between mb-8">
                 <button type="button" @onclick="PreviousMonth" class="bg-gray-900 border border-bamorange text-white hover:bg-bamorange hover:text-gray-900 p-2 md:p-3 rounded transition-colors">
@@ -57,8 +57,8 @@
             </div>
 
             <div class="text-center mt-2 mb-6">
-                <span class="inline-block bg-gray-900 border border-bamorange text-white font-trueno text-[10px] md:text-sm uppercase tracking-widest px-4 md:px-6 py-2 md:py-3 rounded-full shadow-md animate-pulse">
-                    👆 Tryck på en fylld ruta för att hitta dit!
+                <span class="inline-block bg-gray-900 border border-bamorange text-white font-trueno text-[10px] md:text-sm uppercase tracking-widest px-4 md:px-6 py-2 md:py-3 rounded-full shadow-md">
+                    Tryck på en fylld ruta för att hitta dit!
                 </span>
             </div>
 
@@ -85,16 +85,20 @@
                     for (int day = 1; day <= daysInMonth; day++)
                     {
                         var currentDate = new DateTime(currentYear, currentMonth, day);
-                        var hasEvents = GetEventsForDay(day).Any();
+                        var eventsForDay = GetEventsForDay(day).ToList();
+                        var hasEvents = eventsForDay.Any();
                         var isSelected = selectedDate.HasValue && selectedDate.Value.Date == currentDate.Date;
+                        var eventImage = eventsForDay.FirstOrDefault(e => !string.IsNullOrEmpty(e.ImagePath))?.ImagePath;
 
-                        // Färglogik: Bokat = Helt orange. Inte bokat = Grå med orange ram.
-                        var bgClass = hasEvents ? "bg-bamorange text-gray-900" : "bg-gray-900 text-gray-300";
+                        var bgStyle = !string.IsNullOrEmpty(eventImage) ? $"background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{eventImage}'); background-size: cover; background-position: center;" : "";
+
+                        // Färglogik: Bokat = Helt orange (eller bild). Inte bokat = Grå med orange ram.
+                        var bgClass = hasEvents ? (!string.IsNullOrEmpty(eventImage) ? "text-white shadow-inner" : "bg-bamorange text-gray-900") : "bg-gray-900 text-gray-300";
                         var borderClass = isSelected ? "border-2 border-white scale-105 shadow-[0_0_15px_rgba(255,132,0,0.6)] z-10 relative" : "border border-bamorange";
-                        var cursorClass = hasEvents ? "cursor-pointer hover:scale-105 hover:bg-orange-600 hover:text-white" : "cursor-pointer opacity-70 hover:bg-gray-700";
+                        var cursorClass = hasEvents ? "cursor-pointer hover:scale-105 hover:border-white hover:text-white" : "cursor-pointer opacity-70 hover:bg-gray-700";
 
-                        <div @onclick="() => SelectDate(currentDate.Day)" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 @bgClass @borderClass @cursorClass select-none">
-                            <span class="font-trueno font-bold text-lg md:text-2xl">@day</span>
+                        <div @onclick="() => SelectDate(currentDate.Day)" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 @bgClass @borderClass @cursorClass select-none" style="@bgStyle">
+                            <span class="font-trueno font-bold text-lg md:text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">@day</span>
                         </div>
                     }
                 }
@@ -104,9 +108,13 @@
             {
                 var selectedEvents = GetEventsForDay(selectedDate.Value.Day).ToList();
 
-                <div class="mt-8 pt-6 border-t border-gray-700 animate-fade-in-up">
-                    <h3 class="text-2xl font-trueno uppercase tracking-widest text-bamorange mb-6 text-center">
-                        Schema för @selectedDate.Value.ToString("dd MMMM", new CultureInfo("sv-SE"))
+                <div class="mt-8 pt-8 border-t border-gray-700 animate-fade-in-up relative">
+                    <button type="button" @onclick="() => selectedDate = null" title="Stäng" class="absolute top-6 right-2 md:top-6 md:right-4 bg-gray-900 border border-gray-700 hover:border-bamorange hover:text-bamorange text-gray-400 rounded-full p-2.5 transition-colors shadow-lg z-20 cursor-pointer">
+                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+
+                    <h3 class="text-2xl font-trueno uppercase tracking-widest mb-6 text-center">
+                        <span class="text-white">Schema för</span> <span class="text-bamorange">@selectedDate.Value.ToString("d MMMM", new CultureInfo("sv-SE"))</span>
                     </h3>
 
                     @if (selectedEvents.Any())
