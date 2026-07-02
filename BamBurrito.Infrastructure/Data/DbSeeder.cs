@@ -19,7 +19,10 @@ public static class DbSeeder
 
         // 2. Skapa Admin-roll
         if (!await roleManager.RoleExistsAsync("Admin"))
+        {
             await roleManager.CreateAsync(new IdentityRole("Admin"));
+            logger.LogInformation("Admin-roll skapad.");
+        }
 
         // 3. Skapa eller hämta ägaren
         var adminEmail = "owner@bamburrito.se";
@@ -44,6 +47,11 @@ public static class DbSeeder
             {
                 logger.LogError("Kunde inte skapa ägarkontot: {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
             }
+        }
+        else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+            logger.LogInformation("Admin-roll tilldelades befintlig ägare.");
         }
 
         // 4. Seeding av testdata för kalendern

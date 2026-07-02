@@ -1,0 +1,41 @@
+﻿@page "/hemlig-admin-sida-2026"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+@if (!isAuthorized)
+{
+    <div class="p-10 text-white">Verifierar åtkomst...</div>
+}
+else
+{
+    <div class="p-8 max-w-4xl mx-auto text-white">
+        <h2 class="text-3xl font-bold text-bamorange mb-6 uppercase tracking-widest">Kalenderhantering</h2>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 mb-8 shadow-xl">
+            <EditForm Model="newEvent" OnValidSubmit="HandleSubmit" FormName="AddEventForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <InputText @bind-Value="newEvent.Title" placeholder="Platsnamn" class="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:ring-2 focus:ring-bamorange outline-none" />
+                    <InputText @bind-Value="newEvent.Address" placeholder="Adress" class="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:ring-2 focus:ring-bamorange outline-none" />
+                    <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="newEvent.EventDate" class="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:ring-2 focus:ring-bamorange outline-none" />
+                    <InputText @bind-Value="newEvent.Description" placeholder="Beskrivning" class="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:ring-2 focus:ring-bamorange outline-none" />
+                </div>
+                <button type="submit" class="mt-6 w-full bg-bamorange hover:bg-orange-600 text-white p-3 rounded font-bold uppercase tracking-widest transition-all">
+                    Spara plats
+                </button>
+            </EditForm>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <h3 class="mb-4 text-xl font-bold uppercase tracking-wide">Kommande platser</h3>
+            <div class="space-y-3">
+                @foreach (var ev in events)
+                {
+                    <div class="border-b border-gray-700 py-3 flex justify-between">
+                        <span class="text-bamorange font-mono">@ev.EventDate.ToString("yyyy-MM-dd HH:mm")</span>
+                        <span>@ev.Title</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
