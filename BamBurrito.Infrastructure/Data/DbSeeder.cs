@@ -1,7 +1,8 @@
+using BamBurrito.Core.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using BamBurrito.Core.Entities;
 
 namespace BamBurrito.Infrastructure.Data;
 
@@ -9,10 +10,19 @@ public static class DbSeeder
 {
     public static async Task SeedAdminUserAsync(IServiceProvider serviceProvider, ILogger logger)
     {
+        var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        var adminEmail = "owner@bamburrito.se"; 
+        // 1. Säkerställ databasschema
+        await context.Database.MigrateAsync();
 
+        // 2. Skapa Admin-roll
+        if (!await roleManager.RoleExistsAsync("Admin"))
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
+
+        // 3. Skapa eller hämta ägaren
+        var adminEmail = "owner@bamburrito.se";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
         if (adminUser == null)
@@ -21,23 +31,35 @@ public static class DbSeeder
             {
                 UserName = adminEmail,
                 Email = adminEmail,
-                EmailConfirmed = true // Slipper verifierings-mail
+                EmailConfirmed = true
             };
 
             var result = await userManager.CreateAsync(newAdmin, "RullatMedPerfektion2026!");
-
             if (result.Succeeded)
             {
-                logger.LogInformation("Ägarkontot skapades framgångsrikt under uppstart.");
+                await userManager.AddToRoleAsync(newAdmin, "Admin");
+                logger.LogInformation("Ägarkontot skapades och tilldelades Admin-roll.");
             }
             else
             {
                 logger.LogError("Kunde inte skapa ägarkontot: {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
-        else
+
+        // 4. Seeding av testdata för kalendern
+        if (!await context.LocationEvents.AnyAsync())
         {
-            logger.LogInformation("Ägarkontot finns redan, skippar seeding.");
+            var testEvent = new LocationEvent
+            {
+                Title = "Premiär vid Sollentuna Centrum",
+                EventDate = DateTime.Now.AddDays(7),
+                Address = "Sollentunavägen 163",
+                Description = "Vi kickar igång veckan med färska burritos!"
+            };
+
+            context.LocationEvents.Add(testEvent);
+            await context.SaveChangesAsync();
+            logger.LogInformation("Test-event skapat i databasen.");
         }
     }
 }

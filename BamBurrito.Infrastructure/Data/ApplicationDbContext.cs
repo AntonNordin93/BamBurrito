@@ -1,13 +1,23 @@
+using BamBurrito.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using BamBurrito.Core.Entities;
 
 namespace BamBurrito.Infrastructure.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : IdentityDbContext<ApplicationUser>(options)
 {
-    // Det är dessa rader som översätts till tabeller i SQL Server
-    public DbSet<Booking> Bookings { get; set; }
-    public DbSet<MenuItem> MenuItems { get; set; }
+    public DbSet<MenuItem> MenuItems => Set<MenuItem>();
+    public DbSet<Booking> Bookings => Set<Booking>();
+    public DbSet<LocationEvent> LocationEvents => Set<LocationEvent>();
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        // Här konfigurerar vi att Price alltid ska ha 18 siffror totalt, varav 2 är decimaler
+        builder.Entity<MenuItem>()
+            .Property(m => m.Price)
+            .HasPrecision(18, 2);
+    }
 }

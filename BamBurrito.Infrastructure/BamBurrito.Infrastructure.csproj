@@ -19,8 +19,4 @@
     <ProjectReference Include="..\BamBurrito.Core\BamBurrito.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
