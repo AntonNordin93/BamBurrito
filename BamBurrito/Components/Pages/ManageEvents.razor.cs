@@ -70,11 +70,13 @@ public partial class ManageEvents
                 var folderPath = Path.Combine(Env.WebRootPath, "images", "events");
                 Directory.CreateDirectory(folderPath); 
 
-                var fileName = $"{Guid.NewGuid()}_{selectedFile.Name}";
+                var fileName = $"{Guid.NewGuid()}.jpg";
                 var filePath = Path.Combine(folderPath, fileName);
 
+                var resizedImage = await selectedFile.RequestImageFileAsync("image/jpeg", 800, 600);
+
                 await using var stream = new FileStream(filePath, FileMode.Create);
-                await selectedFile.OpenReadStream(maxAllowedSize: 10485760).CopyToAsync(stream); 
+                await resizedImage.OpenReadStream(maxAllowedSize: 10485760).CopyToAsync(stream); 
 
                 newEvent.ImagePath = $"/images/events/{fileName}";
             }
@@ -108,6 +110,19 @@ public partial class ManageEvents
 
         if (confirmed)
         {
+            var evToDelete = events.FirstOrDefault(e => e.Id == id);
+
+            if (evToDelete != null && !string.IsNullOrEmpty(evToDelete.ImagePath))
+            {
+                var relativePath = evToDelete.ImagePath.TrimStart('/');
+                var filePath = Path.Combine(Env.WebRootPath, relativePath);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
             await LocationService.DeleteEventAsync(id);
             events = await LocationService.GetEventsAsync();
             StateHasChanged();
