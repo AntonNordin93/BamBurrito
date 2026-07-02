@@ -14,53 +14,42 @@ public static class DbSeeder
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // 1. Säkerställ databasschema
         await context.Database.MigrateAsync();
 
-        // 2. Skapa Admin-roll
         if (!await roleManager.RoleExistsAsync("Admin"))
         {
             await roleManager.CreateAsync(new IdentityRole("Admin"));
             logger.LogInformation("Admin-roll skapad.");
         }
 
-        // 3. Skapa eller hämta ägaren
         var adminEmail = "owner@bamburrito.se";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
         if (adminUser == null)
         {
-            var newAdmin = new ApplicationUser
-            {
-                UserName = adminEmail,
-                Email = adminEmail,
-                EmailConfirmed = true
-            };
-
+            var newAdmin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
             var result = await userManager.CreateAsync(newAdmin, "RullatMedPerfektion2026!");
+
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(newAdmin, "Admin");
                 logger.LogInformation("Ägarkontot skapades och tilldelades Admin-roll.");
             }
-            else
-            {
-                logger.LogError("Kunde inte skapa ägarkontot: {Errors}", string.Join(", ", result.Errors.Select(e => e.Description)));
-            }
         }
         else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
-            logger.LogInformation("Admin-roll tilldelades befintlig ägare.");
         }
 
-        // 4. Seeding av testdata för kalendern
         if (!await context.LocationEvents.AnyAsync())
         {
+            // Uppdaterat för StartTime och EndTime (Exempel: 16:00 till 20:00)
+            var today = DateTime.Now.Date.AddDays(7);
             var testEvent = new LocationEvent
             {
                 Title = "Premiär vid Sollentuna Centrum",
-                EventDate = DateTime.Now.AddDays(7),
+                StartTime = today.AddHours(16),
+                EndTime = today.AddHours(20),
                 Address = "Sollentunavägen 163",
                 Description = "Vi kickar igång veckan med färska burritos!"
             };

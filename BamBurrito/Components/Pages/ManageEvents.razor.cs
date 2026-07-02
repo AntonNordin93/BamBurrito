@@ -3,23 +3,36 @@ using BamBurrito.Core.Entities;
 using BamBurrito.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.JSInterop;
 
 namespace BamBurrito.Components.Pages;
 
 public partial class ManageEvents
 {
-    [Inject] private LocationService LocationService { get; set; } = default!;
-    [Inject] private NavigationManager Navigation { get; set; } = default!;
-    [Inject] private IConfiguration Configuration { get; set; } = default!;
+    [Inject] protected LocationService LocationService { get; set; } = default!;
+    [Inject] protected NavigationManager Navigation { get; set; } = default!;
+    [Inject] protected IConfiguration Configuration { get; set; } = default!;
+    [Inject] protected IJSRuntime JS { get; set; } = default!;
 
-    [SupplyParameterFromForm] // Detta är magin som binder formuläret
-    private LocationEvent newEvent { get; set; } = new() { EventDate = DateTime.Now };
+    protected LocationEvent? newEvent { get; set; }
+    protected List<LocationEvent> events = new();
+    protected bool isAuthorized = false;
 
-    private bool isAuthorized = false;
-    private List<LocationEvent> events = new();
+    private DateTime GetCleanNow()
+    {
+        var now = DateTime.Now;
+        return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+    }
 
     protected override void OnInitialized()
     {
+        var cleanNow = GetCleanNow();
+        newEvent ??= new LocationEvent
+        {
+            StartTime = cleanNow,
+            EndTime = cleanNow.AddHours(4)
+        };
+
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
         var query = QueryHelpers.ParseQuery(uri.Query);
         var secret = Configuration["AdminSecretKey"];
@@ -32,20 +45,47 @@ public partial class ManageEvents
 
     protected override async Task OnInitializedAsync()
     {
-        if (isAuthorized) events = await LocationService.GetEventsAsync();
+        if (isAuthorized)
+        {
+            events = await LocationService.GetEventsAsync();
+        }
     }
 
-    private async Task HandleSubmit()
+    protected async Task HandleSubmit()
     {
-        await LocationService.CreateEventAsync(newEvent);
+        if (newEvent != null)
+        {
+            newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
+            newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
 
-        // 1. Hämta listan på nytt
+            if (newEvent.Id == 0)
+                await LocationService.CreateEventAsync(newEvent);
+            else
+                await LocationService.UpdateEventAsync(newEvent);
+        }
+
         events = await LocationService.GetEventsAsync();
 
-        // 2. Nollställ formuläret
-        newEvent = new() { EventDate = DateTime.Now };
-
-        // 3. TVINGA UI att rita om sig!
+        var cleanNow = GetCleanNow();
+        newEvent = new LocationEvent { StartTime = cleanNow, EndTime = cleanNow.AddHours(4) };
         StateHasChanged();
+    }
+
+    protected void EditEvent(LocationEvent ev)
+    {
+        newEvent = ev;
+        StateHasChanged();
+    }
+
+    protected async Task DeleteEvent(int id)
+    {
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Är du helt säker på att du vill ta bort detta event?");
+
+        if (confirmed)
+        {
+            await LocationService.DeleteEventAsync(id);
+            events = await LocationService.GetEventsAsync();
+            StateHasChanged();
+        }
     }
 }

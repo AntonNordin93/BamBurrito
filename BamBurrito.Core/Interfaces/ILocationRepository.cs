@@ -6,4 +6,6 @@ public interface ILocationRepository
 {
     Task<List<LocationEvent>> GetAllAsync();
     Task AddAsync(LocationEvent locationEvent);
+    Task DeleteAsync(int id);
+    Task UpdateAsync(LocationEvent locationEvent);
 }
