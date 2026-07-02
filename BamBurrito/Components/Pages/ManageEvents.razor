@@ -90,6 +90,14 @@ else
                                     <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="newEvent.EndTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
                                 </div>
 
+                                @if (newEvent.Id == 0)
+                                {
+                                    <div class="md:col-span-2 w-full relative z-20">
+                                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Antal dagar på samma plats</label>
+                                        <InputNumber @bind-Value="NumberOfDays" class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner relative z-20 text-white" min="1" max="14" />
+                                    </div>
+                                }
+
                                 <div class="md:col-span-2 w-full relative z-20">
                                     <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Beskrivning</label>
                                     <InputTextArea @bind-Value="newEvent.Description" placeholder="Övrig information om eventet..." class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner h-28 resize-none leading-relaxed relative z-20" />

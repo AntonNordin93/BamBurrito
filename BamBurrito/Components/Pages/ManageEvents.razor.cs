@@ -22,6 +22,7 @@ public partial class ManageEvents
     protected List<LocationEvent> events = new();
     protected bool isAuthorized = false;
     private IBrowserFile? selectedFile;
+    protected int NumberOfDays { get; set; } = 1;
 
     private DateTime GetCleanNow()
     {
@@ -81,19 +82,38 @@ public partial class ManageEvents
                 newEvent.ImagePath = $"/images/events/{fileName}";
             }
 
-            newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
-            newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
-
             if (newEvent.Id == 0)
-                await LocationService.CreateEventAsync(newEvent);
+            {
+                newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
+                newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
+
+                for (int i = 0; i < NumberOfDays; i++)
+                {
+                    var ev = new LocationEvent
+                    {
+                        Title = newEvent.Title,
+                        Address = newEvent.Address,
+                        Description = newEvent.Description,
+                        ImagePath = newEvent.ImagePath,
+                        StartTime = newEvent.StartTime.AddDays(i),
+                        EndTime = newEvent.EndTime.AddDays(i)
+                    };
+                    await LocationService.CreateEventAsync(ev);
+                }
+            }
             else
+            {
+                newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
+                newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
                 await LocationService.UpdateEventAsync(newEvent);
+            }
         }
 
         events = await LocationService.GetEventsAsync();
 
         var cleanNow = GetCleanNow();
         newEvent = new LocationEvent { StartTime = cleanNow, EndTime = cleanNow.AddHours(4) };
+        NumberOfDays = 1;
         selectedFile = null;
         StateHasChanged();
     }
@@ -101,6 +121,7 @@ public partial class ManageEvents
     protected void EditEvent(LocationEvent ev)
     {
         newEvent = ev;
+        NumberOfDays = 1;
         StateHasChanged();
     }
 
