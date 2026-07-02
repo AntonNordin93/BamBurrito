@@ -1,0 +1,132 @@
+﻿@page "/menu"
+<PageTitle>Menu - BAM! Burrito</PageTitle>
+
+<!-- FIX: Osynlig SVG-behållare som garanterar att filtren överlever och körs överallt! -->
+<svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
+    <defs>
+        <filter id="rugged-top" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+
+        <filter id="rugged-price" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="13" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </defs>
+</svg>
+
+<div class="w-full min-h-screen bg-gray-900 text-white pb-32 relative overflow-hidden">
+
+    <div class="max-w-4xl mx-auto text-center pt-16 pb-12 px-4 relative z-10">
+        <span class="text-bamorange uppercase tracking-widest font-trueno text-xs block mb-2 font-bold">Rullat &amp; Klart</span>
+        <h1 class="text-5xl md:text-7xl font-trueno uppercase tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+            Vår <span class="text-bamorange">Meny</span>
+        </h1>
+        <div class="w-24 h-1 bg-bamorange mx-auto mt-4 rounded-full shadow-md"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        @foreach (var categoryGroup in AllMenuItems.GroupBy(item => item.Category))
+        {
+            <div class="mb-24">
+
+                <div class="flex items-center gap-4 mb-12 select-none">
+                    <h2 class="text-3xl font-trueno uppercase tracking-wider text-white drop-shadow">
+                        @categoryGroup.Key
+                    </h2>
+
+                    <div class="flex-grow overflow-visible pointer-events-none mt-1">
+                        <!-- SKRÄDDARSYDD FÖR DESKTOP: Den vanliga sicksacken, dold på mobilen -->
+                        <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="hidden md:block w-full h-8 overflow-visible">
+                            <path d="M0,20 L25,10 L50,30 L75,10 L100,30 L125,10 L150,30 L175,10 L200,30 L225,10 L250,30 L275,10 L300,30 L325,10 L350,30 L375,10 L400,30 L425,10 L450,30 L475,10 L500,30 L525,10 L550,30 L575,10 L600,30 L625,10 L650,30 L675,10 L700,30 L725,10 L750,30 L775,10 L800,30 L825,10 L850,30 L875,10 L900,30 L925,10 L950,30 L975,10 L1000,20"
+                                  stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                        </svg>
+
+                        <!-- SKRÄDDARSYDD FÖR MOBIL: Mjukare och bredare svängar i själva ritningen (inte hoptryckt), så filtret ryms snyggt! -->
+                        <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="block md:hidden w-full h-6 overflow-visible">
+                            <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
+                                  stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    @foreach (var item in categoryGroup)
+                    {
+                        <div class="relative group transition-all duration-300 min-h-[240px] flex flex-col p-6 md:p-8 justify-between @(item.IsAvailable ? "hover:-translate-y-2" : "opacity-70")">
+
+                            <!-- RAMAR FÖR MATKORTEN -->
+                            <div class="absolute inset-0 z-0 overflow-visible pointer-events-none -m-1">
+                                <svg viewBox="0 0 300 200" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+                                    <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
+                                          fill="#0b0f19" filter="url(#rugged-top)" class="shadow-2xl" />
+                                    <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
+                                          fill="none"
+                                          stroke="@(item.IsAvailable ? "#FF8400" : "#4b5563")"
+                                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)"
+                                          class="@(item.IsAvailable ? "group-hover:stroke-yellow-400" : "") transition-colors duration-300" />
+                                </svg>
+                            </div>
+
+                            <div class="relative z-10 flex flex-col justify-between h-full flex-grow">
+                                <div>
+                                    <div class="flex justify-between items-start gap-4 mb-4">
+                                        <h3 class="text-2xl font-trueno text-white uppercase tracking-wide @(item.IsAvailable ? "group-hover:text-bamorange" : "text-gray-400") transition-colors">
+                                            @item.Name
+                                        </h3>
+
+                                        @if (item.IsAvailable)
+                                        {
+                                            <div class="relative min-w-[85px] h-10 flex items-center justify-center transform -rotate-3 group-hover:rotate-0 transition-all duration-300 shrink-0 px-4">
+                                                <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
+                                                    <svg viewBox="0 0 120 50" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+                                                        <path d="@GetPricePath(item.Id)"
+                                                              fill="#FF8400" filter="url(#rugged-price)" class="group-hover:fill-yellow-400 transition-colors duration-300" />
+                                                    </svg>
+                                                </div>
+                                                <span class="relative z-10 font-trueno text-lg text-[#0b0f19] font-black whitespace-nowrap pt-0.5">
+                                                    @string.Format("{0:0}", item.Price):-
+                                                </span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="relative min-w-[110px] h-10 flex items-center justify-center transform rotate-3 transition-all duration-300 shrink-0 px-3">
+                                                <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
+                                                    <svg viewBox="0 0 120 50" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+                                                        <path d="@GetPricePath(item.Id)"
+                                                              fill="#374151" filter="url(#rugged-price)" />
+                                                    </svg>
+                                                </div>
+                                                <span class="relative z-10 font-trueno text-xs text-[#0b0f19] font-black tracking-widest whitespace-nowrap pt-1">
+                                                    KOMMANDE
+                                                </span>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <p class="text-gray-300 text-sm font-trueno tracking-wide leading-relaxed border-l-4 @(item.IsAvailable ? "border-bamorange group-hover:border-yellow-400" : "border-gray-600") pl-4 transition-colors duration-300 uppercase">
+                                        @item.Description
+                                    </p>
+                                </div>
+
+                                <div class="w-full flex justify-between items-center opacity-0 group-hover:opacity-100 transition-all duration-300 pt-6 transform translate-y-2 group-hover:translate-y-0">
+                                    <span class="text-yellow-400 text-xs font-bold font-trueno uppercase tracking-widest">
+                                        @(item.IsAvailable ? "Äkta råvaror" : "Håll ut!")
+                                    </span>
+                                    <span class="text-bamorange text-sm font-trueno uppercase tracking-wider font-bold">
+                                        @(item.IsAvailable ? "¡KÖP! \u2192" : "¡INOM KORT!")
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

@@ -6,7 +6,6 @@ namespace BamBurrito.Components.Layout
 {
     public partial class NavMenu : IDisposable
     {
-        // Vi injicerar tjänsterna här på ett snyggt, rent C#-vis istället för @inject
         [Inject] public NavigationManager NavigationManager { get; set; } = null!;
         [Inject] public IJSRuntime JSRuntime { get; set; } = null!;
 
