@@ -130,16 +130,16 @@
 @if (isModalOpen)
 {
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
-        <div class="relative w-full max-w-2xl bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl p-6 md:p-10 max-h-[90vh] overflow-y-auto">
-            
-            <button @onclick="CloseModal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors cursor-pointer">
+        <div class="relative w-full max-w-lg lg:max-w-3xl bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-lg p-8 md:p-12 max-h-[90vh] overflow-y-auto w-[calc(100%-2rem)]">
+
+            <button @onclick="CloseModal" class="absolute top-4 right-4 lg:top-6 lg:right-6 text-gray-400 hover:text-white transition-colors cursor-pointer">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
 
-            <h2 class="text-3xl font-trueno uppercase tracking-wider text-white drop-shadow mb-2">
-                Offert<span class="text-bamorange">förfrågan</span>
+            <h2 class="text-3xl font-trueno uppercase tracking-wider text-white drop-shadow mb-2 leading-tight">
+                <span class="block sm:inline">Offert</span><span class="text-bamorange block sm:inline">förfrågan</span>
             </h2>
             <div class="w-16 h-1 bg-bamorange mb-8 rounded-full"></div>
 
@@ -153,43 +153,49 @@
                     </div>
                 }
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+
                     <div class="w-full">
-                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Ditt Namn/Företag *</label>
-                        <InputText @bind-Value="offerRequest.Name" placeholder="T.ex. Ica Alnö" class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white rounded" />
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Ditt Namn/Företag *</label>
+                        <InputText @bind-Value="offerRequest.Name" placeholder="T.ex. Ica Alnö" class="font-trueno text-xs lg:text-sm uppercase w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white rounded" />
                         <ValidationMessage For="@(() => offerRequest.Name)" class="text-red-500 font-trueno text-[10px] uppercase mt-1 tracking-widest" />
                     </div>
-                    
+
                     <div class="w-full">
-                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Din Email *</label>
-                        <InputText @bind-Value="offerRequest.Email" placeholder="namn@foretag.se" class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white rounded cursor-text" />
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Din Email *</label>
+                        <InputText @bind-Value="offerRequest.Email" placeholder="namn@foretag.se" class="font-trueno text-xs lg:text-sm uppercase w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white rounded cursor-text" />
                         <ValidationMessage For="@(() => offerRequest.Email)" class="text-red-500 font-trueno text-[10px] uppercase mt-1 tracking-widest" />
                     </div>
 
-                    <div class="md:col-span-2 w-full pt-4 border-t border-gray-800">
-                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Önskat Datum *</label>
-                        <InputDate Type="InputDateType.Date" @bind-Value="offerRequest.Date" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider rounded" />
+                    <div class="md:col-span-2 w-full mt-1 lg:mt-2">
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Adress *</label>
+                        <InputText @bind-Value="offerRequest.Address" placeholder="Företagsvägen 1, 852 30 Sundsvall" class="font-trueno text-xs lg:text-sm uppercase w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white rounded cursor-text" />
+                        <ValidationMessage For="@(() => offerRequest.Address)" class="text-red-500 font-trueno text-[10px] uppercase mt-1 tracking-widest" />
+                    </div>
+
+                    <div class="md:col-span-2 w-full pt-3 lg:pt-4 border-t border-gray-800 mt-1 lg:mt-2">
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Önskat Datum *</label>
+                        <InputDate Type="InputDateType.Date" @bind-Value="offerRequest.Date" class="bam-date-picker font-trueno text-xs lg:text-sm w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider rounded" />
                     </div>
 
                     <div class="w-full">
-                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Från klockan *</label>
-                        <InputDate Type="InputDateType.Time" @bind-Value="offerRequest.StartTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider rounded" />
-                    </div>
-                    
-                    <div class="w-full">
-                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till klockan *</label>
-                        <InputDate Type="InputDateType.Time" @bind-Value="offerRequest.EndTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider rounded" />
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Från klockan *</label>
+                        <InputDate Type="InputDateType.Time" @bind-Value="offerRequest.StartTime" class="bam-date-picker font-trueno text-xs lg:text-sm w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider rounded" />
                     </div>
 
-                    <div class="md:col-span-2 w-full mt-2">
-                        <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Berätta mer om eventet *</label>
-                        <InputTextArea @bind-Value="offerRequest.Message" placeholder="Antal personer, typ av tillställning etc..." class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white h-32 resize-none rounded leading-relaxed cursor-text" />
+                    <div class="w-full">
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till klockan *</label>
+                        <InputDate Type="InputDateType.Time" @bind-Value="offerRequest.EndTime" class="bam-date-picker font-trueno text-xs lg:text-sm w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider rounded" />
+                    </div>
+
+                    <div class="md:col-span-2 w-full mt-1 lg:mt-2">
+                        <label class="font-trueno text-[10px] lg:text-xs text-gray-400 mb-1 lg:mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Berätta mer om eventet *</label>
+                        <InputTextArea @bind-Value="offerRequest.Message" placeholder="Antal personer, typ av tillställning etc..." class="font-trueno text-xs lg:text-sm uppercase w-full p-2 lg:p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white h-24 sm:h-32 lg:h-32 resize-none rounded leading-relaxed cursor-text" />
                         <ValidationMessage For="@(() => offerRequest.Message)" class="text-red-500 font-trueno text-[10px] uppercase mt-1 tracking-widest" />
                     </div>
                 </div>
 
-                <button type="submit" disabled="@isSubmitting" class="relative w-full h-16 mt-10 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+                <button type="submit" disabled="@isSubmitting" class="relative w-full h-12 lg:h-16 mt-6 lg:mt-8 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
                     <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
                         <svg viewBox="0 0 400 50" preserveAspectRatio="none" class="w-full h-full overflow-visible">
                             <path d="M 4,4 L 396,6 L 394,46 L 6,44 Z" fill="#FF8400" filter="url(#rugged-price)" class="group-hover:fill-yellow-400 transition-colors duration-300" />
@@ -223,7 +229,7 @@
                 Tack för ditt meddelande! Vi har mottagit din förfrågan och återkommer med en offert så snart vi kan.
             </p>
 
-            <button @onclick="CloseSuccessModal" class="inline-block px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white font-trueno text-sm uppercase tracking-widest rounded transition-colors cursor-pointer border border-gray-600">
+            <button @onclick="CloseSuccessModal" class="inline-block px-8 py-3 bg-[#1f2937] hover:bg-gray-700 text-white font-trueno text-sm uppercase tracking-widest rounded transition-colors cursor-pointer border border-gray-600 outline-none">
                 Stäng
             </button>
         </div>

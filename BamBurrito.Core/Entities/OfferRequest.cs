@@ -14,6 +14,9 @@ namespace BamBurrito.Core.Entities
         [EmailAddress(ErrorMessage = "Ogiltig email-adress")]
         public string Email { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Adress är obligatorisk")]
+        public string Address { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Datum är obligatoriskt")]
         public DateTime Date { get; set; } = DateTime.Now.Date.AddDays(7);
 
