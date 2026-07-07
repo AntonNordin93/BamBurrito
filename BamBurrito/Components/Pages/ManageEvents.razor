@@ -45,7 +45,7 @@ else
 {
     <div class="w-full min-h-screen bg-gray-900 text-white pb-32 relative overflow-hidden">
 
-        <div class="max-w-4xl mx-auto text-center pt-16 pb-8 px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center pt-16 pb-4 px-4 relative z-10">
             <span class="text-bamorange uppercase tracking-widest font-trueno text-xs block mb-2 font-bold">Admin-Zonen</span>
             <h1 class="text-5xl md:text-6xl font-trueno uppercase tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
                 @(newEvent?.Id == 0 ? "Ny " : "Redigera ") <span class="text-bamorange">Plats</span>
@@ -53,7 +53,7 @@ else
             <div class="w-24 h-1 bg-bamorange mx-auto mt-4 rounded-full shadow-md"></div>
         </div>
 
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-2">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-6">
 
             <div class="relative transition-all duration-300 px-6 pt-10 pb-12 md:px-16 md:pt-12 md:pb-16 mb-24 min-h-[300px]">
 
@@ -162,7 +162,16 @@ else
                 <h2 class="text-2xl md:text-3xl font-trueno uppercase tracking-wider text-white drop-shadow whitespace-nowrap">
                     Kommande platser
                 </h2>
-                <div class="w-full h-1 bg-bamorange rounded-full shadow-md mt-1"></div>
+                <div class="flex-grow overflow-visible pointer-events-none mt-1">
+                    <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="hidden md:block w-full h-8 overflow-visible">
+                        <path d="M0,20 L25,10 L50,30 L75,10 L100,30 L125,10 L150,30 L175,10 L200,30 L225,10 L250,30 L275,10 L300,30 L325,10 L350,30 L375,10 L400,30 L425,10 L450,30 L475,10 L500,30 L525,10 L550,30 L575,10 L600,30 L625,10 L650,30 L675,10 L700,30 L725,10 L750,30 L775,10 L800,30 L825,10 L850,30 L875,10 L900,30 L925,10 L950,30 L975,10 L1000,20"
+                              stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                    </svg>
+                    <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="block md:hidden w-full h-6 overflow-visible">
+                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
+                              stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                    </svg>
+                </div>
             </div>
 
             <div class="space-y-6 md:space-y-6">
