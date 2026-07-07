@@ -175,7 +175,8 @@ namespace BamBurrito.Infrastructure.Services
                 {
                     // For dev purposes, log the error but we might just simulate success if no local SMTP exists.
                     _logger.LogWarning(smtpEx, "SMTP sändning misslyckades. Konfigurera EmailSettings i appsettings.json. Sparar offerten i logg istället.");
-                    _logger.LogInformation("SIMULERAD EMAIL -> \nTo: {OwnerEmail}\nFrom/ReplyTo: {CustomerEmail}\nNamn: {Name}\nDatum: {Date}\nMeddelande: {Message}", ownerEmail, request.Email, request.Name, request.Date, request.Message);
+                    _logger.LogInformation("SIMULERAD EMAIL -> \nTo: {OwnerEmail}\nFrom/ReplyTo: {CustomerEmail}\nNamn: {Name}\nDatum: {Date:yyyy-MM-dd HH:mm} - {EndTime:HH:mm}\nMeddelande: {Message}", 
+                        ownerEmail, request.Email, request.Name, request.StartTime, request.EndTime, request.Message);
                 }
             }
             catch (Exception ex)
