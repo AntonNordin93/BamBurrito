@@ -25,14 +25,18 @@ public partial class ManageEvents
 
     // Proxy properties för UI
     protected DateTime MainEventDate { get; set; }
-    protected DateTime MainStartTime { get; set; }
-    protected DateTime MainEndTime { get; set; }
+    protected int MainStartHour { get; set; }
+    protected int MainStartMinute { get; set; }
+    protected int MainEndHour { get; set; }
+    protected int MainEndMinute { get; set; }
 
     public class DatePeriod
     {
         public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public int StartHour { get; set; }
+        public int StartMinute { get; set; }
+        public int EndHour { get; set; }
+        public int EndMinute { get; set; }
     }
 
     protected List<DatePeriod> additionalDates = new();
@@ -40,11 +44,14 @@ public partial class ManageEvents
     protected void AddDate()
     {
         var cleanNow = GetCleanNow();
+        var endDate = cleanNow.AddHours(4);
         additionalDates.Add(new DatePeriod
         {
             Date = cleanNow.Date,
-            StartTime = cleanNow,
-            EndTime = cleanNow.AddHours(4)
+            StartHour = cleanNow.Hour,
+            StartMinute = cleanNow.Minute,
+            EndHour = endDate.Hour,
+            EndMinute = endDate.Minute
         });
     }
 
@@ -56,7 +63,8 @@ public partial class ManageEvents
     private DateTime GetCleanNow()
     {
         var now = DateTime.Now;
-        return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+        int minute = (now.Minute / 5) * 5;
+        return new DateTime(now.Year, now.Month, now.Day, now.Hour, minute, 0);
     }
 
     protected override void OnInitialized()
@@ -65,13 +73,16 @@ public partial class ManageEvents
 
         // Initiera Proxy Variablerna
         MainEventDate = cleanNow.Date;
-        MainStartTime = cleanNow;
-        MainEndTime = cleanNow.AddHours(4);
+        MainStartHour = cleanNow.Hour;
+        MainStartMinute = cleanNow.Minute;
+        var endInitial = cleanNow.AddHours(4);
+        MainEndHour = endInitial.Hour;
+        MainEndMinute = endInitial.Minute;
 
         newEvent ??= new LocationEvent
         {
             StartTime = cleanNow,
-            EndTime = cleanNow.AddHours(4),
+            EndTime = endInitial,
             GroupId = Guid.NewGuid().ToString()
         };
 
@@ -124,8 +135,8 @@ public partial class ManageEvents
                 newEvent.GroupId = batchGroupId;
 
                 // Sammanfoga Datum och Tid för Huvudeventet
-                newEvent.StartTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainStartTime.Hour, MainStartTime.Minute, 0);
-                newEvent.EndTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainEndTime.Hour, MainEndTime.Minute, 0);
+                newEvent.StartTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainStartHour, MainStartMinute, 0);
+                newEvent.EndTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainEndHour, MainEndMinute, 0);
 
                 await LocationService.CreateEventAsync(newEvent);
 
@@ -138,8 +149,8 @@ public partial class ManageEvents
                         Address = newEvent.Address,
                         Description = newEvent.Description,
                         ImagePath = newEvent.ImagePath,
-                        StartTime = new DateTime(dp.Date.Year, dp.Date.Month, dp.Date.Day, dp.StartTime.Hour, dp.StartTime.Minute, 0),
-                        EndTime = new DateTime(dp.Date.Year, dp.Date.Month, dp.Date.Day, dp.EndTime.Hour, dp.EndTime.Minute, 0),
+                        StartTime = new DateTime(dp.Date.Year, dp.Date.Month, dp.Date.Day, dp.StartHour, dp.StartMinute, 0),
+                        EndTime = new DateTime(dp.Date.Year, dp.Date.Month, dp.Date.Day, dp.EndHour, dp.EndMinute, 0),
                         GroupId = batchGroupId
                     };
                     await LocationService.CreateEventAsync(ev);
@@ -148,8 +159,8 @@ public partial class ManageEvents
             else
             {
                 // Uppdatering - Använd proxy variablerna
-                newEvent.StartTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainStartTime.Hour, MainStartTime.Minute, 0);
-                newEvent.EndTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainEndTime.Hour, MainEndTime.Minute, 0);
+                newEvent.StartTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainStartHour, MainStartMinute, 0);
+                newEvent.EndTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainEndHour, MainEndMinute, 0);
                 await LocationService.UpdateEventAsync(newEvent);
             }
         }
@@ -158,10 +169,13 @@ public partial class ManageEvents
 
         // Återställ allt
         var cleanNow = GetCleanNow();
-        newEvent = new LocationEvent { StartTime = cleanNow, EndTime = cleanNow.AddHours(4), GroupId = Guid.NewGuid().ToString() };
+        var nextEnd = cleanNow.AddHours(4);
+        newEvent = new LocationEvent { StartTime = cleanNow, EndTime = nextEnd, GroupId = Guid.NewGuid().ToString() };
         MainEventDate = cleanNow.Date;
-        MainStartTime = cleanNow;
-        MainEndTime = cleanNow.AddHours(4);
+        MainStartHour = cleanNow.Hour;
+        MainStartMinute = cleanNow.Minute;
+        MainEndHour = nextEnd.Hour;
+        MainEndMinute = nextEnd.Minute;
         additionalDates.Clear();
         selectedFile = null;
         StateHasChanged();
@@ -173,8 +187,10 @@ public partial class ManageEvents
 
         // Fyll i Proxy Variablerna från det klickade eventet
         MainEventDate = ev.StartTime.Date;
-        MainStartTime = ev.StartTime;
-        MainEndTime = ev.EndTime;
+        MainStartHour = ev.StartTime.Hour;
+        MainStartMinute = (ev.StartTime.Minute / 5) * 5;
+        MainEndHour = ev.EndTime.Hour;
+        MainEndMinute = (ev.EndTime.Minute / 5) * 5;
 
         additionalDates.Clear();
         StateHasChanged();

@@ -67,11 +67,27 @@ else
 
                                 <div class="w-full relative z-20">
                                     <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Från klockan *</label>
-                                    <InputDate Type="InputDateType.Time" @bind-Value="MainStartTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
+                                    <div class="flex gap-2">
+                                        <InputSelect @bind-Value="MainStartHour" class="font-trueno text-sm w-1/2 p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                            @for(int i = 0; i < 24; i++) { <option value="@i">@i.ToString("00")</option> }
+                                        </InputSelect>
+                                        <span class="text-white text-xl self-center">:</span>
+                                        <InputSelect @bind-Value="MainStartMinute" class="font-trueno text-sm w-1/2 p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                            @for(int i = 0; i < 60; i += 5) { <option value="@i">@i.ToString("00")</option> }
+                                        </InputSelect>
+                                    </div>
                                 </div>
                                 <div class="w-full relative z-20">
                                     <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till klockan *</label>
-                                    <InputDate Type="InputDateType.Time" @bind-Value="MainEndTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
+                                    <div class="flex gap-2">
+                                        <InputSelect @bind-Value="MainEndHour" class="font-trueno text-sm w-1/2 p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                            @for(int i = 0; i < 24; i++) { <option value="@i">@i.ToString("00")</option> }
+                                        </InputSelect>
+                                        <span class="text-white text-xl self-center">:</span>
+                                        <InputSelect @bind-Value="MainEndMinute" class="font-trueno text-sm w-1/2 p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                            @for(int i = 0; i < 60; i += 5) { <option value="@i">@i.ToString("00")</option> }
+                                        </InputSelect>
+                                    </div>
                                 </div>
 
                                 @if (newEvent.Id == 0)
@@ -93,7 +109,15 @@ else
 
                                             <div class="w-full">
                                                 <label class="font-trueno text-xs text-gray-400 block mb-2 uppercase tracking-widest border-l-2 border-bamorange pl-2">Från *</label>
-                                                <InputDate Type="InputDateType.Time" @bind-Value="date.StartTime" class="bam-date-picker font-trueno text-sm w-full p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
+                                                <div class="flex gap-2">
+                                                    <InputSelect @bind-Value="date.StartHour" class="font-trueno text-sm w-1/2 p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                                        @for(int i = 0; i < 24; i++) { <option value="@i">@i.ToString("00")</option> }
+                                                    </InputSelect>
+                                                    <span class="text-white text-lg self-center">:</span>
+                                                    <InputSelect @bind-Value="date.StartMinute" class="font-trueno text-sm w-1/2 p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                                        @for(int i = 0; i < 60; i += 5) { <option value="@i">@i.ToString("00")</option> }
+                                                    </InputSelect>
+                                                </div>
                                             </div>
 
                                             <div class="w-full">
@@ -101,7 +125,15 @@ else
                                                     <label class="font-trueno text-xs text-gray-400 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till *</label>
                                                     <button type="button" @onclick="() => RemoveDate(date)" class="text-[10px] uppercase text-red-500 hover:text-red-300 font-trueno cursor-pointer">Ta bort</button>
                                                 </div>
-                                                <InputDate Type="InputDateType.Time" @bind-Value="date.EndTime" class="bam-date-picker font-trueno text-sm w-full p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
+                                                <div class="flex gap-2">
+                                                    <InputSelect @bind-Value="date.EndHour" class="font-trueno text-sm w-1/2 p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                                        @for(int i = 0; i < 24; i++) { <option value="@i">@i.ToString("00")</option> }
+                                                    </InputSelect>
+                                                    <span class="text-white text-lg self-center">:</span>
+                                                    <InputSelect @bind-Value="date.EndMinute" class="font-trueno text-sm w-1/2 p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white relative z-20">
+                                                        @for(int i = 0; i < 60; i += 5) { <option value="@i">@i.ToString("00")</option> }
+                                                    </InputSelect>
+                                                </div>
                                             </div>
 
                                         </div>
