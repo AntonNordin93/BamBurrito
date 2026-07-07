@@ -129,10 +129,10 @@
 
 @if (isModalOpen)
 {
-    <div class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
-        <div class="relative w-full max-w-[calc(100vw-2rem)] sm:max-w-md lg:max-w-3xl bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl p-4 sm:p-6 lg:p-10 max-h-[85vh] lg:max-h-[90vh] overflow-y-auto box-border">
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+        <div class="relative w-full max-w-lg lg:max-w-3xl bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-lg p-8 md:p-12 max-h-[90vh] overflow-y-auto w-[calc(100%-2rem)]">
 
-            <button @onclick="CloseModal" class="absolute top-2 right-2 lg:top-4 lg:right-4 text-gray-400 hover:text-white transition-colors cursor-pointer">
+            <button @onclick="CloseModal" class="absolute top-4 right-4 lg:top-6 lg:right-6 text-gray-400 hover:text-white transition-colors cursor-pointer">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -229,7 +229,7 @@
                 Tack för ditt meddelande! Vi har mottagit din förfrågan och återkommer med en offert så snart vi kan.
             </p>
 
-            <button @onclick="CloseSuccessModal" class="inline-block px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white font-trueno text-sm uppercase tracking-widest rounded transition-colors cursor-pointer border border-gray-600">
+            <button @onclick="CloseSuccessModal" class="inline-block px-8 py-3 bg-[#1f2937] hover:bg-gray-700 text-white font-trueno text-sm uppercase tracking-widest rounded transition-colors cursor-pointer border border-gray-600 outline-none">
                 Stäng
             </button>
         </div>
