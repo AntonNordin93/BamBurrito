@@ -76,13 +76,13 @@
                         var daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
                         var offset = ((int)firstDay.DayOfWeek + 6) % 7;
 
-                        // Tomma rutor
+                        // Tomma rutor för dagar innan månaden börjar
                         for (int i = 0; i < offset; i++)
                         {
                             <div class="h-12 md:h-16 bg-gray-900 rounded border border-gray-700 opacity-30 pointer-events-none"></div>
                         }
 
-                        // Dagarna
+                        // Skapa alla dagarna i månaden
                         for (int day = 1; day <= daysInMonth; day++)
                         {
                             var currentDate = new DateTime(currentYear, currentMonth, day);
@@ -91,20 +91,14 @@
                             var isSelected = selectedDate.HasValue && selectedDate.Value.Date == currentDate.Date;
                             var eventImage = eventsForDay.FirstOrDefault(e => !string.IsNullOrEmpty(e.ImagePath))?.ImagePath;
 
-                            // Formaterar bilden snyggt som bakgrund om den finns, annars en tom sträng
                             var bgStyle = !string.IsNullOrEmpty(eventImage) ? $"background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{eventImage}') center/cover no-repeat;" : "";
 
-                            // Bokade datum har en orange ram. Obokade har grå ram.
-                            var baseClasses = hasEvents ? "border-bamorange font-bold text-lg md:text-2xl cursor-pointer hover:scale-105" : "border-gray-700 text-gray-400 text-lg md:text-2xl opacity-60";
+                            var bgClass = hasEvents ? (!string.IsNullOrEmpty(eventImage) ? "text-white shadow-inner" : "bg-bamorange text-gray-900") : "bg-gray-900 text-gray-300";
+                            var borderClass = isSelected ? "border-2 border-white scale-105 shadow-[0_0_15px_rgba(255,132,0,0.6)] z-10 relative" : (hasEvents ? "border border-bamorange" : "border border-gray-700");
+                            var cursorClass = hasEvents ? "cursor-pointer hover:scale-105 hover:border-white hover:text-white" : "cursor-pointer opacity-70 hover:bg-gray-700";
 
-                            // Ändrar färg beroende på om bilden finns, annars helt orange fyllning
-                            var bgClass = hasEvents ? (!string.IsNullOrEmpty(eventImage) ? "text-white" : "bg-bamorange text-gray-900") : "bg-gray-900";
-
-                            // Markerad effekt
-                            if (isSelected) baseClasses += " border-2 border-white scale-105  z-10 relative";
-
-                            <div @onclick="() => { if (hasEvents) SelectDate(currentDate.Day); }" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 border @baseClasses @bgClass select-none" style="@bgStyle">
-                                <span class="font-trueno drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">@day</span>
+                            <div @onclick="() => { if (hasEvents) SelectDate(currentDate.Day); }" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 @bgClass @borderClass @cursorClass select-none" style="@bgStyle">
+                                <span class="font-trueno font-bold text-lg md:text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">@day</span>
                             </div>
                         }
                     }
@@ -145,13 +139,19 @@
                                         }
                                     </div>
 
-                                    <a href="https://www.google.com/maps/search/?api=1&query=@(Uri.EscapeDataString(ev.Address + " " + ev.Title))"
+                                    <a href="@($"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString(ev.Address)}")"
                                        target="_blank"
                                        class="bg-bamorange text-[#0b0f19] font-trueno font-black uppercase tracking-widest px-8 py-4 rounded hover:bg-orange-600 hover:text-white transition-colors w-full md:w-auto text-center whitespace-nowrap shadow-lg shrink-0">
                                         Hitta Hit →
                                     </a>
                                 </div>
                             }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-center">
+                            <p class="text-gray-400 font-trueno uppercase tracking-wider text-sm">Inga bokade stopp denna dag.</p>
                         </div>
                     }
                 </div>
