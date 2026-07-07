@@ -62,46 +62,48 @@
                 </span>
             </div>
 
-            <div class="grid grid-cols-7 gap-1 md:gap-2 mb-2 select-none">
-                @foreach (var day in new[] { "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön" })
-                {
-                    <div class="text-center font-trueno text-gray-400 text-xs md:text-sm uppercase tracking-widest pb-1">@day</div>
-                }
-            </div>
-
-            <div class="grid grid-cols-7 gap-1 md:gap-2">
-                @{
-                    var firstDay = new DateTime(currentYear, currentMonth, 1);
-                    var daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
-                    var offset = ((int)firstDay.DayOfWeek + 6) % 7;
-
-                    // Tomma rutor för dagar innan månaden börjar
-                    for (int i = 0; i < offset; i++)
+            <div class="border-2 border-bamorange rounded-lg p-2 md:p-4 bg-gray-900/50">
+                <div class="grid grid-cols-7 gap-1 md:gap-2 mb-2 select-none">
+                    @foreach (var day in new[] { "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön" })
                     {
-                        <div class="h-12 md:h-16 bg-gray-900 rounded border border-bamorange opacity-30 pointer-events-none"></div>
+                        <div class="text-center font-trueno text-gray-400 text-xs md:text-sm uppercase tracking-widest pb-1">@day</div>
                     }
+                </div>
 
-                    // Skapa alla dagarna i månaden
-                    for (int day = 1; day <= daysInMonth; day++)
-                    {
-                        var currentDate = new DateTime(currentYear, currentMonth, day);
-                        var eventsForDay = GetEventsForDay(day).ToList();
-                        var hasEvents = eventsForDay.Any();
-                        var isSelected = selectedDate.HasValue && selectedDate.Value.Date == currentDate.Date;
-                        var eventImage = eventsForDay.FirstOrDefault(e => !string.IsNullOrEmpty(e.ImagePath))?.ImagePath;
+                <div class="grid grid-cols-7 gap-1 md:gap-2">
+                    @{
+                        var firstDay = new DateTime(currentYear, currentMonth, 1);
+                        var daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+                        var offset = ((int)firstDay.DayOfWeek + 6) % 7;
 
-                        var bgStyle = !string.IsNullOrEmpty(eventImage) ? $"background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{eventImage}'); background-size: cover; background-position: center;" : "";
+                        // Tomma rutor för dagar innan månaden börjar
+                        for (int i = 0; i < offset; i++)
+                        {
+                            <div class="h-12 md:h-16 bg-gray-900 rounded border border-bamorange opacity-30 pointer-events-none"></div>
+                        }
 
-                        // Färglogik: Bokat = Helt orange (eller bild). Inte bokat = Grå med orange ram.
-                        var bgClass = hasEvents ? (!string.IsNullOrEmpty(eventImage) ? "text-white shadow-inner" : "bg-bamorange text-gray-900") : "bg-gray-900 text-gray-300";
-                        var borderClass = isSelected ? "border-2 border-white scale-105 shadow-[0_0_15px_rgba(255,132,0,0.6)] z-10 relative" : "border border-bamorange";
-                        var cursorClass = hasEvents ? "cursor-pointer hover:scale-105 hover:border-white hover:text-white" : "cursor-pointer opacity-70 hover:bg-gray-700";
+                        // Skapa alla dagarna i månaden
+                        for (int day = 1; day <= daysInMonth; day++)
+                        {
+                            var currentDate = new DateTime(currentYear, currentMonth, day);
+                            var eventsForDay = GetEventsForDay(day).ToList();
+                            var hasEvents = eventsForDay.Any();
+                            var isSelected = selectedDate.HasValue && selectedDate.Value.Date == currentDate.Date;
+                            var eventImage = eventsForDay.FirstOrDefault(e => !string.IsNullOrEmpty(e.ImagePath))?.ImagePath;
 
-                        <div @onclick="() => SelectDate(currentDate.Day)" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 @bgClass @borderClass @cursorClass select-none" style="@bgStyle">
-                            <span class="font-trueno font-bold text-lg md:text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">@day</span>
-                        </div>
+                            var bgStyle = !string.IsNullOrEmpty(eventImage) ? $"background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{eventImage}'); background-size: cover; background-position: center;" : "";
+
+                            // Färglogik: Bokat = Helt orange (eller bild). Inte bokat = Grå med orange ram.
+                            var bgClass = hasEvents ? (!string.IsNullOrEmpty(eventImage) ? "text-white shadow-inner" : "bg-bamorange text-gray-900") : "bg-gray-900 text-gray-300";
+                            var borderClass = isSelected ? "border-2 border-white scale-105 shadow-[0_0_15px_rgba(255,132,0,0.6)] z-10 relative" : "border border-bamorange";
+                            var cursorClass = hasEvents ? "cursor-pointer hover:scale-105 hover:border-white hover:text-white" : "cursor-pointer opacity-70 hover:bg-gray-700";
+
+                            <div @onclick="() => SelectDate(currentDate.Day)" class="h-12 md:h-16 flex items-center justify-center rounded transition-all duration-200 @bgClass @borderClass @cursorClass select-none" style="@bgStyle">
+                                <span class="font-trueno font-bold text-lg md:text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">@day</span>
+                            </div>
+                        }
                     }
-                }
+                </div>
             </div>
 
             @if (selectedDate.HasValue)
