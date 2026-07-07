@@ -23,6 +23,11 @@
 
 <svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
     <defs>
+        <filter id="rugged-top" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+
         <filter id="rugged-price" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="13" xChannelSelector="R" yChannelSelector="G" />
@@ -50,9 +55,7 @@ else
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-6">
 
-            <div class="relative group transition-all duration-300 px-6 py-12 md:p-16 mb-24 min-h-[300px]">
-
-                <div class="absolute inset-0 z-0 bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl pointer-events-none"></div>
+            <div class="bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl p-6 md:p-12 mb-24 relative z-10">
 
                 <div class="relative z-10">
                     @if (newEvent != null)
@@ -73,23 +76,23 @@ else
                                 </div>
 
                                 <div class="md:col-span-2 w-full relative z-20 border-t border-gray-800 pt-6">
-                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Datum</label>
+                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Datum *</label>
                                     <InputDate Type="InputDateType.Date" @bind-Value="MainEventDate" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
                                 </div>
 
                                 <div class="w-full relative z-20">
-                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Från klockan</label>
+                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Från klockan *</label>
                                     <InputDate Type="InputDateType.Time" @bind-Value="MainStartTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
                                 </div>
                                 <div class="w-full relative z-20">
-                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till klockan</label>
+                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till klockan *</label>
                                     <InputDate Type="InputDateType.Time" @bind-Value="MainEndTime" class="bam-date-picker font-trueno text-sm w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
                                 </div>
 
                                 @if (newEvent.Id == 0)
                                 {
                                     <div class="md:col-span-2 w-full relative z-20 flex justify-start mt-2 border-b border-gray-800 pb-6">
-                                        <button type="button" @onclick="AddDate" class="text-xs font-trueno font-bold uppercase tracking-widest bg-gray-900 border-2 border-bamorange text-bamorange px-6 py-3 hover:bg-bamorange hover:text-[#0b0f19] transition-colors rounded shadow-md cursor-pointer">
+                                        <button type="button" @onclick="AddDate" class="text-xs font-trueno font-bold uppercase tracking-widest bg-[#0b0f19] border-2 border-bamorange text-bamorange px-6 py-3 hover:bg-bamorange hover:text-[#0b0f19] transition-colors rounded shadow-md cursor-pointer">
                                             + Lägg till datum
                                         </button>
                                     </div>
@@ -99,18 +102,18 @@ else
                                         <div class="md:col-span-2 w-full relative z-20 bg-gray-900/50 p-4 border border-gray-700 rounded grid grid-cols-1 md:grid-cols-3 gap-4">
 
                                             <div class="w-full">
-                                                <label class="font-trueno text-xs text-gray-400 block mb-2 uppercase tracking-widest border-l-2 border-bamorange pl-2">Extra Datum</label>
+                                                <label class="font-trueno text-xs text-gray-400 block mb-2 uppercase tracking-widest border-l-2 border-bamorange pl-2">Extra Datum *</label>
                                                 <InputDate Type="InputDateType.Date" @bind-Value="date.Date" class="bam-date-picker font-trueno text-sm w-full p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
                                             </div>
 
                                             <div class="w-full">
-                                                <label class="font-trueno text-xs text-gray-400 block mb-2 uppercase tracking-widest border-l-2 border-bamorange pl-2">Från</label>
+                                                <label class="font-trueno text-xs text-gray-400 block mb-2 uppercase tracking-widest border-l-2 border-bamorange pl-2">Från *</label>
                                                 <InputDate Type="InputDateType.Time" @bind-Value="date.StartTime" class="bam-date-picker font-trueno text-sm w-full p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
                                             </div>
 
                                             <div class="w-full">
                                                 <div class="flex justify-between items-end mb-2">
-                                                    <label class="font-trueno text-xs text-gray-400 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till</label>
+                                                    <label class="font-trueno text-xs text-gray-400 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Till *</label>
                                                     <button type="button" @onclick="() => RemoveDate(date)" class="text-[10px] uppercase text-red-500 hover:text-red-300 font-trueno cursor-pointer">Ta bort</button>
                                                 </div>
                                                 <InputDate Type="InputDateType.Time" @bind-Value="date.EndTime" class="bam-date-picker font-trueno text-sm w-full p-3 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner text-white uppercase tracking-wider relative z-20" />
@@ -138,7 +141,7 @@ else
                                 </div>
                             </div>
 
-                            <button type="submit" class="relative w-full h-16 mt-12 md:mt-16 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer z-20">
+                            <button type="submit" class="relative w-full h-16 mt-12 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer z-20">
                                 <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
                                     <svg viewBox="0 0 400 50" preserveAspectRatio="none" class="w-full h-full overflow-visible">
                                         <path d="M 4,4 L 396,6 L 394,46 L 6,44 Z" fill="#FF8400" filter="url(#rugged-price)" class="group-hover:fill-yellow-400 transition-colors duration-300" />
@@ -157,15 +160,22 @@ else
                 <h2 class="text-2xl md:text-3xl font-trueno uppercase tracking-wider text-white drop-shadow whitespace-nowrap">
                     Kommande platser
                 </h2>
-                <div class="w-full h-1 bg-bamorange rounded-full shadow-md mt-1"></div>
+                <div class="flex-grow overflow-visible pointer-events-none mt-1">
+                    <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="hidden md:block w-full h-8 overflow-visible">
+                        <path d="M0,20 L25,10 L50,30 L75,10 L100,30 L125,10 L150,30 L175,10 L200,30 L225,10 L250,30 L275,10 L300,30 L325,10 L350,30 L375,10 L400,30 L425,10 L450,30 L475,10 L500,30 L525,10 L550,30 L575,10 L600,30 L625,10 L650,30 L675,10 L700,30 L725,10 L750,30 L775,10 L800,30 L825,10 L850,30 L875,10 L900,30 L925,10 L950,30 L975,10 L1000,20"
+                              stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                    </svg>
+                    <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="block md:hidden w-full h-6 overflow-visible">
+                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
+                              stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
+                    </svg>
+                </div>
             </div>
 
             <div class="space-y-6 md:space-y-6">
                 @foreach (var ev in events.OrderBy(e => e.StartTime))
                 {
-                    <div class="relative group transition-all duration-300 flex flex-col md:flex-row px-6 py-8 md:p-8 justify-between items-center hover:-translate-y-1 gap-6 md:gap-0">
-
-                        <div class="absolute inset-0 z-0 bg-[#0b0f19] border-2 border-gray-700 rounded-xl shadow-lg pointer-events-none group-hover:border-bamorange transition-colors duration-300"></div>
+                    <div class="relative group transition-all duration-300 flex flex-col md:flex-row p-6 md:p-8 justify-between items-center hover:-translate-y-1 gap-6 md:gap-0 bg-[#0b0f19] border-2 border-gray-700 hover:border-bamorange rounded-xl shadow-lg">
 
                         <div class="relative z-10 w-full md:w-auto text-left">
                             <span class="text-bamorange font-mono block mb-2 font-bold tracking-widest text-sm">
