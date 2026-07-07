@@ -10,6 +10,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<MenuItem> MenuItems => Set<MenuItem>();
     public DbSet<Booking> Bookings => Set<Booking>();
     public DbSet<LocationEvent> LocationEvents => Set<LocationEvent>();
+    public DbSet<OfferRequest> OfferRequests => Set<OfferRequest>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

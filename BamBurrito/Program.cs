@@ -4,6 +4,7 @@ using BamBurrito.Components.Account;
 using BamBurrito.Core.Entities;
 using BamBurrito.Core.Interfaces;
 using BamBurrito.Infrastructure.Data;
+using BamBurrito.Infrastructure.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 builder.Services.AddScoped<ILocationRepository, BamBurrito.Infrastructure.Repositories.LocationRepository>();
 builder.Services.AddScoped<BamBurrito.Core.Services.LocationService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddAuthentication(options =>
 {
