@@ -55,7 +55,9 @@ else
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-6">
 
-            <div class="bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl p-6 md:p-12 mb-24 relative z-10">
+            <div class="relative transition-all duration-300 px-6 py-12 md:p-16 mb-24 min-h-[300px]">
+
+                <div class="absolute inset-0 z-0 bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl pointer-events-none"></div>
 
                 <div class="relative z-10">
                     @if (newEvent != null)
@@ -92,7 +94,7 @@ else
                                 @if (newEvent.Id == 0)
                                 {
                                     <div class="md:col-span-2 w-full relative z-20 flex justify-start mt-2 border-b border-gray-800 pb-6">
-                                        <button type="button" @onclick="AddDate" class="text-xs font-trueno font-bold uppercase tracking-widest bg-[#0b0f19] border-2 border-bamorange text-bamorange px-6 py-3 hover:bg-bamorange hover:text-[#0b0f19] transition-colors rounded shadow-md cursor-pointer">
+                                        <button type="button" @onclick="AddDate" class="text-xs font-trueno font-bold uppercase tracking-widest bg-gray-900 border-2 border-bamorange text-bamorange px-6 py-3 hover:bg-bamorange hover:text-[#0b0f19] transition-colors rounded shadow-md cursor-pointer">
                                             + Lägg till datum
                                         </button>
                                     </div>
@@ -141,7 +143,7 @@ else
                                 </div>
                             </div>
 
-                            <button type="submit" class="relative w-full h-16 mt-12 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer z-20">
+                            <button type="submit" class="relative w-full h-16 mt-12 md:mt-16 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer z-20">
                                 <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
                                     <svg viewBox="0 0 400 50" preserveAspectRatio="none" class="w-full h-full overflow-visible">
                                         <path d="M 4,4 L 396,6 L 394,46 L 6,44 Z" fill="#FF8400" filter="url(#rugged-price)" class="group-hover:fill-yellow-400 transition-colors duration-300" />
