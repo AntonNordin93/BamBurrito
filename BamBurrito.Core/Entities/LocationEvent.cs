@@ -7,14 +7,14 @@ public class LocationEvent
     public int Id { get; set; }
     public string GroupId { get; set; } = Guid.NewGuid().ToString();
 
-    [Required]
+    [Required(ErrorMessage = "Platsnamn är obligatoriskt")]
     public string Title { get; set; } = string.Empty;
 
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public string Description { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "Adress är obligatoriskt")]
     public string Address { get; set; } = string.Empty;
 
     public string? ImagePath { get; set; }

@@ -23,17 +23,29 @@ public partial class ManageEvents
     protected bool isAuthorized = false;
     private IBrowserFile? selectedFile;
 
+    // Proxy properties för UI
+    protected DateTime MainEventDate { get; set; }
+    protected DateTime MainStartTime { get; set; }
+    protected DateTime MainEndTime { get; set; }
+
     public class DatePeriod
     {
+        public DateTime Date { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
     }
+
     protected List<DatePeriod> additionalDates = new();
 
     protected void AddDate()
     {
         var cleanNow = GetCleanNow();
-        additionalDates.Add(new DatePeriod { StartTime = cleanNow, EndTime = cleanNow.AddHours(4) });
+        additionalDates.Add(new DatePeriod
+        {
+            Date = cleanNow.Date,
+            StartTime = cleanNow,
+            EndTime = cleanNow.AddHours(4)
+        });
     }
 
     protected void RemoveDate(DatePeriod dp)
@@ -50,11 +62,17 @@ public partial class ManageEvents
     protected override void OnInitialized()
     {
         var cleanNow = GetCleanNow();
+
+        // Initiera Proxy Variablerna
+        MainEventDate = cleanNow.Date;
+        MainStartTime = cleanNow;
+        MainEndTime = cleanNow.AddHours(4);
+
         newEvent ??= new LocationEvent
         {
             StartTime = cleanNow,
             EndTime = cleanNow.AddHours(4),
-            GroupId = Guid.NewGuid().ToString() // Säkrar upp ett unikt GroupId
+            GroupId = Guid.NewGuid().ToString()
         };
 
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
@@ -84,7 +102,6 @@ public partial class ManageEvents
     {
         if (newEvent != null)
         {
-            // Hantera bilduppladdning först
             if (selectedFile != null)
             {
                 var folderPath = Path.Combine(Env.WebRootPath, "images", "events");
@@ -101,48 +118,50 @@ public partial class ManageEvents
                 newEvent.ImagePath = $"/images/events/{fileName}";
             }
 
-            // Skapar vi ett nytt? (Id == 0)
             if (newEvent.Id == 0)
             {
-                // Säkra en unik grupp
                 string batchGroupId = Guid.NewGuid().ToString();
                 newEvent.GroupId = batchGroupId;
 
-                newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
-                newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
+                // Sammanfoga Datum och Tid för Huvudeventet
+                newEvent.StartTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainStartTime.Hour, MainStartTime.Minute, 0);
+                newEvent.EndTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainEndTime.Hour, MainEndTime.Minute, 0);
 
                 await LocationService.CreateEventAsync(newEvent);
 
-                // Gå igenom extra valda datum
-                foreach (var date in additionalDates)
+                // Sammanfoga Datum och Tid för Extra Dagar
+                foreach (var dp in additionalDates)
                 {
-                    var extraEvent = new LocationEvent
+                    var ev = new LocationEvent
                     {
                         Title = newEvent.Title,
                         Address = newEvent.Address,
                         Description = newEvent.Description,
                         ImagePath = newEvent.ImagePath,
-                        StartTime = new DateTime(date.StartTime.Year, date.StartTime.Month, date.StartTime.Day, date.StartTime.Hour, date.StartTime.Minute, 0),
-                        EndTime = new DateTime(date.EndTime.Year, date.EndTime.Month, date.EndTime.Day, date.EndTime.Hour, date.EndTime.Minute, 0),
+                        StartTime = new DateTime(dp.Date.Year, dp.Date.Month, dp.Date.Day, dp.StartTime.Hour, dp.StartTime.Minute, 0),
+                        EndTime = new DateTime(dp.Date.Year, dp.Date.Month, dp.Date.Day, dp.EndTime.Hour, dp.EndTime.Minute, 0),
                         GroupId = batchGroupId
                     };
-                    await LocationService.CreateEventAsync(extraEvent);
+                    await LocationService.CreateEventAsync(ev);
                 }
             }
             else
             {
-                // Vi uppdaterar en existerande rad
-                newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
-                newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
+                // Uppdatering - Använd proxy variablerna
+                newEvent.StartTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainStartTime.Hour, MainStartTime.Minute, 0);
+                newEvent.EndTime = new DateTime(MainEventDate.Year, MainEventDate.Month, MainEventDate.Day, MainEndTime.Hour, MainEndTime.Minute, 0);
                 await LocationService.UpdateEventAsync(newEvent);
             }
         }
 
         events = await LocationService.GetEventsAsync();
 
-        // Nollställ formuläret inför nästa bokning
+        // Återställ allt
         var cleanNow = GetCleanNow();
         newEvent = new LocationEvent { StartTime = cleanNow, EndTime = cleanNow.AddHours(4), GroupId = Guid.NewGuid().ToString() };
+        MainEventDate = cleanNow.Date;
+        MainStartTime = cleanNow;
+        MainEndTime = cleanNow.AddHours(4);
         additionalDates.Clear();
         selectedFile = null;
         StateHasChanged();
@@ -151,7 +170,13 @@ public partial class ManageEvents
     protected void EditEvent(LocationEvent ev)
     {
         newEvent = ev;
-        additionalDates.Clear(); // Man ändrar bara en dag åt gången
+
+        // Fyll i Proxy Variablerna från det klickade eventet
+        MainEventDate = ev.StartTime.Date;
+        MainStartTime = ev.StartTime;
+        MainEndTime = ev.EndTime;
+
+        additionalDates.Clear();
         StateHasChanged();
     }
 
@@ -165,17 +190,13 @@ public partial class ManageEvents
 
             if (evToDelete != null)
             {
-                // 1. Ta bort eventet från databasen först
                 await LocationService.DeleteEventAsync(id);
-                events = await LocationService.GetEventsAsync(); // Ladda om listan för att få uppdaterat tillstånd
+                events = await LocationService.GetEventsAsync();
 
-                // 2. Kolla om bilden finns och kan raderas
                 if (!string.IsNullOrEmpty(evToDelete.ImagePath))
                 {
-                    // Använder något AV DE ANDRA HÄMTADE EVENTEN samma bild?
                     bool isImageStillInUse = events.Any(e => e.ImagePath == evToDelete.ImagePath);
 
-                    // Om INGEN ANNAN använder bilden - Radera den från servern
                     if (!isImageStillInUse)
                     {
                         var relativePath = evToDelete.ImagePath.TrimStart('/');
