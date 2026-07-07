@@ -23,11 +23,6 @@
 
 <svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
     <defs>
-        <filter id="rugged-top" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-
         <filter id="rugged-price" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="13" xChannelSelector="R" yChannelSelector="G" />
@@ -55,18 +50,9 @@ else
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-6">
 
-            <div class="relative group transition-all duration-300 px-6 pt-12 pb-24 md:px-16 md:pt-24 md:pb-32 mb-24 min-h-[300px]">
+            <div class="relative group transition-all duration-300 px-6 py-12 md:p-16 mb-24 min-h-[300px]">
 
-                <div class="hidden md:block absolute -left-6 -right-6 -top-6 -bottom-10 z-0 overflow-visible pointer-events-none">
-                    <svg viewBox="0 0 300 200" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                        <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
-                              fill="#0b0f19" filter="url(#rugged-top)" class="shadow-2xl" />
-                        <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
-                              fill="none" stroke="#FF8400" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
-                    </svg>
-                </div>
-
-                <div class="md:hidden absolute inset-0 z-0 bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl pointer-events-none"></div>
+                <div class="absolute inset-0 z-0 bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl pointer-events-none"></div>
 
                 <div class="relative z-10">
                     @if (newEvent != null)
@@ -171,31 +157,15 @@ else
                 <h2 class="text-2xl md:text-3xl font-trueno uppercase tracking-wider text-white drop-shadow whitespace-nowrap">
                     Kommande platser
                 </h2>
-                <div class="flex-grow overflow-visible pointer-events-none mt-1">
-                    <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="hidden md:block w-full h-8 overflow-visible">
-                        <path d="M0,20 L25,10 L50,30 L75,10 L100,30 L125,10 L150,30 L175,10 L200,30 L225,10 L250,30 L275,10 L300,30 L325,10 L350,30 L375,10 L400,30 L425,10 L450,30 L475,10 L500,30 L525,10 L550,30 L575,10 L600,30 L625,10 L650,30 L675,10 L700,30 L725,10 L750,30 L775,10 L800,30 L825,10 L850,30 L875,10 L900,30 L925,10 L950,30 L975,10 L1000,20"
-                              stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
-                    </svg>
-                    <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="block md:hidden w-full h-6 overflow-visible">
-                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
-                              stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
-                    </svg>
-                </div>
+                <div class="w-full h-1 bg-bamorange rounded-full shadow-md mt-1"></div>
             </div>
 
-            <div class="space-y-12 md:space-y-8">
+            <div class="space-y-6 md:space-y-6">
                 @foreach (var ev in events.OrderBy(e => e.StartTime))
                 {
-                    <div class="relative group transition-all duration-300 flex flex-col md:flex-row px-6 py-10 md:p-10 justify-between items-center hover:-translate-y-1 gap-6 md:gap-0">
+                    <div class="relative group transition-all duration-300 flex flex-col md:flex-row px-6 py-8 md:p-8 justify-between items-center hover:-translate-y-1 gap-6 md:gap-0">
 
-                        <div class="hidden md:block absolute -inset-4 z-0 overflow-visible pointer-events-none">
-                            <svg viewBox="0 0 800 120" preserveAspectRatio="none" class="w-full h-full overflow-visible">
-                                <path d="M 6,5 L 795,7 L 794,115 L 4,113 Z" fill="#0b0f19" filter="url(#rugged-top)" class="shadow-lg" />
-                                <path d="M 6,5 L 795,7 L 794,115 L 4,113 Z" fill="none" stroke="#374151" stroke-width="2" filter="url(#rugged-top)" class="group-hover:stroke-gray-500 transition-colors duration-300" />
-                            </svg>
-                        </div>
-
-                        <div class="md:hidden absolute inset-0 z-0 bg-[#0b0f19] border-2 border-[#374151] rounded-xl shadow-lg pointer-events-none group-hover:border-gray-500 transition-colors duration-300"></div>
+                        <div class="absolute inset-0 z-0 bg-[#0b0f19] border-2 border-gray-700 rounded-xl shadow-lg pointer-events-none group-hover:border-bamorange transition-colors duration-300"></div>
 
                         <div class="relative z-10 w-full md:w-auto text-left">
                             <span class="text-bamorange font-mono block mb-2 font-bold tracking-widest text-sm">
