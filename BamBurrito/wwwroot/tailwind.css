@@ -1975,6 +1975,11 @@ video {
   background-color: rgb(234 88 12 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-gray-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:\!text-bamorange:hover {
   --tw-text-opacity: 1 !important;
   color: rgb(255 132 0 / var(--tw-text-opacity, 1)) !important;

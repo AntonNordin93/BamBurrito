@@ -9,10 +9,31 @@
         color-scheme: dark;
     }
 
+        /* Färgar kalender/klock-ikonen BAM-orange */
         .bam-date-picker::-webkit-calendar-picker-indicator {
             cursor: pointer;
             padding: 5px;
-            filter: invert(0.8);
+            filter: invert(58%) sepia(87%) saturate(1475%) hue-rotate(359deg) brightness(102%) contrast(105%);
+            transition: transform 0.2s ease;
+        }
+
+        .bam-date-picker:hover::-webkit-calendar-picker-indicator {
+            transform: scale(1.1);
+        }
+
+        /* Tvingar fram Upp/Ner-pilar (Spinners) och färgar dem BAM-orange */
+        .bam-date-picker::-webkit-inner-spin-button {
+            opacity: 1; /* Gör pilarna alltid synliga */
+            display: block;
+            cursor: pointer;
+            height: 30px;
+            margin-left: 8px;
+            filter: invert(58%) sepia(87%) saturate(1475%) hue-rotate(359deg) brightness(102%) contrast(105%);
+            transition: transform 0.2s ease;
+        }
+
+        .bam-date-picker:hover::-webkit-inner-spin-button {
+            transform: scale(1.1);
         }
 
     /* Stänger av Blazors inbyggda gröna och röda valideringsramar */
