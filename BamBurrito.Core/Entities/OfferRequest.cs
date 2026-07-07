@@ -5,6 +5,8 @@ namespace BamBurrito.Core.Entities
 {
     public class OfferRequest
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Namn är obligatoriskt")]
         public string Name { get; set; } = string.Empty;
 

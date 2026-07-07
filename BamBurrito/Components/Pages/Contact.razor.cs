@@ -14,6 +14,9 @@ namespace BamBurrito.Components.Pages
         [Inject]
         public ILogger<Contact> Logger { get; set; } = default!;
 
+        [Inject]
+        public BamBurrito.Infrastructure.Data.ApplicationDbContext DbContext { get; set; } = default!;
+
         private bool isModalOpen = false;
         private bool isSuccessModalOpen = false;
         private bool isSubmitting = false;
@@ -46,8 +49,13 @@ namespace BamBurrito.Components.Pages
 
             try
             {
+                // Spara förfrågan i databasen först
+                DbContext.OfferRequests.Add(offerRequest);
+                await DbContext.SaveChangesAsync();
+
+                // Därefter, skicka mejlet
                 await EmailService.SendOfferRequestEmailAsync(offerRequest);
-                
+
                 // Vid framgång
                 isModalOpen = false;
                 isSuccessModalOpen = true;
