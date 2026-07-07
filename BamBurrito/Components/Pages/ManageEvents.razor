@@ -15,7 +15,6 @@
             filter: invert(0.8);
         }
 
-    /* Stänger av Blazors inbyggda gröna och röda valideringsramar */
     .valid.modified:not([type=checkbox]), .invalid.modified:not([type=checkbox]) {
         outline: none !important;
     }
@@ -70,14 +69,17 @@ else
                     @if (newEvent != null)
                     {
                         <EditForm Model="newEvent" OnValidSubmit="HandleSubmit">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary class="text-red-500 font-trueno text-sm mb-4 border-l-4 border-red-500 pl-4 bg-red-900/20 p-2" />
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 md:gap-y-10">
 
                                 <div class="w-full relative z-20">
-                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Platsnamn</label>
+                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Platsnamn *</label>
                                     <InputText @bind-Value="newEvent.Title" placeholder="T.ex. Ica Alnö" class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner relative z-20" />
                                 </div>
                                 <div class="w-full relative z-20">
-                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Adress</label>
+                                    <label class="font-trueno text-xs text-gray-400 mb-2 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Adress *</label>
                                     <InputText @bind-Value="newEvent.Address" placeholder="T.ex. Raholmsvägen 1" class="font-trueno text-sm uppercase w-full p-4 bg-gray-900 border-none focus:ring-2 focus:ring-bamorange outline-none shadow-inner relative z-20" />
                                 </div>
 
@@ -97,9 +99,11 @@ else
                                             + Lägg till datum
                                         </button>
                                     </div>
-                                    
-                                    @foreach (var date in additionalDates)
+
+                                    @for (int i = 0; i < additionalDates.Count; i++)
                                     {
+                                        var index = i;
+                                        var date = additionalDates[index];
                                         <div class="w-full relative z-20">
                                             <div class="flex justify-between items-end mb-2">
                                                 <label class="font-trueno text-xs text-gray-400 block uppercase tracking-widest border-l-2 border-bamorange pl-2">Extra Från</label>
@@ -166,7 +170,7 @@ else
             </div>
 
             <div class="space-y-12 md:space-y-8">
-                @foreach (var ev in events)
+                @foreach (var ev in events.OrderBy(e => e.StartTime))
                 {
                     <div class="relative group transition-all duration-300 flex flex-col md:flex-row px-6 py-10 md:p-10 justify-between items-center hover:-translate-y-1 gap-6 md:gap-0">
 

@@ -22,7 +22,7 @@ public partial class ManageEvents
     protected List<LocationEvent> events = new();
     protected bool isAuthorized = false;
     private IBrowserFile? selectedFile;
-    
+
     public class DatePeriod
     {
         public DateTime StartTime { get; set; }
@@ -53,7 +53,8 @@ public partial class ManageEvents
         newEvent ??= new LocationEvent
         {
             StartTime = cleanNow,
-            EndTime = cleanNow.AddHours(4)
+            EndTime = cleanNow.AddHours(4),
+            GroupId = Guid.NewGuid().ToString() // Säkrar upp ett unikt GroupId
         };
 
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
@@ -83,10 +84,11 @@ public partial class ManageEvents
     {
         if (newEvent != null)
         {
+            // Hantera bilduppladdning först
             if (selectedFile != null)
             {
                 var folderPath = Path.Combine(Env.WebRootPath, "images", "events");
-                Directory.CreateDirectory(folderPath); 
+                Directory.CreateDirectory(folderPath);
 
                 var fileName = $"{Guid.NewGuid()}.jpg";
                 var filePath = Path.Combine(folderPath, fileName);
@@ -94,34 +96,42 @@ public partial class ManageEvents
                 var resizedImage = await selectedFile.RequestImageFileAsync("image/jpeg", 800, 600);
 
                 await using var stream = new FileStream(filePath, FileMode.Create);
-                await resizedImage.OpenReadStream(maxAllowedSize: 10485760).CopyToAsync(stream); 
+                await resizedImage.OpenReadStream(maxAllowedSize: 10485760).CopyToAsync(stream);
 
                 newEvent.ImagePath = $"/images/events/{fileName}";
             }
 
+            // Skapar vi ett nytt? (Id == 0)
             if (newEvent.Id == 0)
             {
+                // Säkra en unik grupp
+                string batchGroupId = Guid.NewGuid().ToString();
+                newEvent.GroupId = batchGroupId;
+
                 newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
                 newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
 
                 await LocationService.CreateEventAsync(newEvent);
 
+                // Gå igenom extra valda datum
                 foreach (var date in additionalDates)
                 {
-                    var ev = new LocationEvent
+                    var extraEvent = new LocationEvent
                     {
                         Title = newEvent.Title,
                         Address = newEvent.Address,
                         Description = newEvent.Description,
                         ImagePath = newEvent.ImagePath,
                         StartTime = new DateTime(date.StartTime.Year, date.StartTime.Month, date.StartTime.Day, date.StartTime.Hour, date.StartTime.Minute, 0),
-                        EndTime = new DateTime(date.EndTime.Year, date.EndTime.Month, date.EndTime.Day, date.EndTime.Hour, date.EndTime.Minute, 0)
+                        EndTime = new DateTime(date.EndTime.Year, date.EndTime.Month, date.EndTime.Day, date.EndTime.Hour, date.EndTime.Minute, 0),
+                        GroupId = batchGroupId
                     };
-                    await LocationService.CreateEventAsync(ev);
+                    await LocationService.CreateEventAsync(extraEvent);
                 }
             }
             else
             {
+                // Vi uppdaterar en existerande rad
                 newEvent.StartTime = new DateTime(newEvent.StartTime.Year, newEvent.StartTime.Month, newEvent.StartTime.Day, newEvent.StartTime.Hour, newEvent.StartTime.Minute, 0);
                 newEvent.EndTime = new DateTime(newEvent.EndTime.Year, newEvent.EndTime.Month, newEvent.EndTime.Day, newEvent.EndTime.Hour, newEvent.EndTime.Minute, 0);
                 await LocationService.UpdateEventAsync(newEvent);
@@ -130,8 +140,9 @@ public partial class ManageEvents
 
         events = await LocationService.GetEventsAsync();
 
+        // Nollställ formuläret inför nästa bokning
         var cleanNow = GetCleanNow();
-        newEvent = new LocationEvent { StartTime = cleanNow, EndTime = cleanNow.AddHours(4) };
+        newEvent = new LocationEvent { StartTime = cleanNow, EndTime = cleanNow.AddHours(4), GroupId = Guid.NewGuid().ToString() };
         additionalDates.Clear();
         selectedFile = null;
         StateHasChanged();
@@ -140,7 +151,7 @@ public partial class ManageEvents
     protected void EditEvent(LocationEvent ev)
     {
         newEvent = ev;
-        additionalDates.Clear();
+        additionalDates.Clear(); // Man ändrar bara en dag åt gången
         StateHasChanged();
     }
 
@@ -152,19 +163,31 @@ public partial class ManageEvents
         {
             var evToDelete = events.FirstOrDefault(e => e.Id == id);
 
-            if (evToDelete != null && !string.IsNullOrEmpty(evToDelete.ImagePath))
+            if (evToDelete != null)
             {
-                var relativePath = evToDelete.ImagePath.TrimStart('/');
-                var filePath = Path.Combine(Env.WebRootPath, relativePath);
+                // 1. Ta bort eventet från databasen först
+                await LocationService.DeleteEventAsync(id);
+                events = await LocationService.GetEventsAsync(); // Ladda om listan för att få uppdaterat tillstånd
 
-                if (System.IO.File.Exists(filePath))
+                // 2. Kolla om bilden finns och kan raderas
+                if (!string.IsNullOrEmpty(evToDelete.ImagePath))
                 {
-                    System.IO.File.Delete(filePath);
+                    // Använder något AV DE ANDRA HÄMTADE EVENTEN samma bild?
+                    bool isImageStillInUse = events.Any(e => e.ImagePath == evToDelete.ImagePath);
+
+                    // Om INGEN ANNAN använder bilden - Radera den från servern
+                    if (!isImageStillInUse)
+                    {
+                        var relativePath = evToDelete.ImagePath.TrimStart('/');
+                        var filePath = Path.Combine(Env.WebRootPath, relativePath);
+
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            System.IO.File.Delete(filePath);
+                        }
+                    }
                 }
             }
-
-            await LocationService.DeleteEventAsync(id);
-            events = await LocationService.GetEventsAsync();
             StateHasChanged();
         }
     }
