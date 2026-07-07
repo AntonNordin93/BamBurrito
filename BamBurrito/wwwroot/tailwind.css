@@ -792,6 +792,14 @@ video {
   margin-top: 3rem;
 }
 
+.mt-0 {
+  margin-top: 0px;
+}
+
+.mt-16 {
+  margin-top: 4rem;
+}
+
 .block {
   display: block;
 }
@@ -1495,6 +1503,14 @@ video {
 
 .pb-4 {
   padding-bottom: 1rem;
+}
+
+.pb-0 {
+  padding-bottom: 0px;
+}
+
+.pt-10 {
+  padding-top: 2.5rem;
 }
 
 .text-left {
@@ -2278,6 +2294,14 @@ video {
 
   .md\:pt-24 {
     padding-top: 6rem;
+  }
+
+  .md\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .md\:pt-12 {
+    padding-top: 3rem;
   }
 
   .md\:text-left {
