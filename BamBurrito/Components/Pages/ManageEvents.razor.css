@@ -1,0 +1,21 @@
+.bam-date-picker {
+    color-scheme: dark;
+}
+
+/* Färgar kalender/klock-ikonen BAM-orange */
+.bam-date-picker::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    filter: invert(58%) sepia(87%) saturate(1475%) hue-rotate(359deg) brightness(102%) contrast(105%);
+    transition: transform 0.2s ease;
+}
+
+.bam-date-picker:hover::-webkit-calendar-picker-indicator {
+    transform: scale(1.1);
+}
+
+/* Stänger av Blazors inbyggda gröna och röda valideringsramar */
+::deep .valid.modified:not([type=checkbox]), 
+::deep .invalid.modified:not([type=checkbox]) {
+    outline: none !important;
+}
