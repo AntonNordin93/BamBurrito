@@ -15,6 +15,7 @@
             filter: invert(0.8);
         }
 
+    /* Stänger av Blazors inbyggda gröna och röda valideringsramar */
     .valid.modified:not([type=checkbox]), .invalid.modified:not([type=checkbox]) {
         outline: none !important;
     }
@@ -56,7 +57,7 @@ else
 
             <div class="relative group transition-all duration-300 px-6 py-12 md:p-16 mb-24 min-h-[300px]">
 
-                <div class="absolute -left-2 -right-2 -top-10 -bottom-12 md:-inset-6 z-0 overflow-visible pointer-events-none">
+                <div class="hidden md:block absolute -inset-6 z-0 overflow-visible pointer-events-none">
                     <svg viewBox="0 0 300 200" preserveAspectRatio="none" class="w-full h-full overflow-visible">
                         <path d="M 14,12 L 80,9 L 160,13 L 230,10 L 288,14 L 292,50 L 287,100 L 291,150 L 286,188 L 220,192 L 150,185 L 80,191 L 12,186 L 8,140 L 13,90 L 9,45 Z"
                               fill="#0b0f19" filter="url(#rugged-top)" class="shadow-2xl" />
@@ -64,6 +65,8 @@ else
                               fill="none" stroke="#FF8400" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
                     </svg>
                 </div>
+
+                <div class="md:hidden absolute inset-0 z-0 bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-2xl pointer-events-none"></div>
 
                 <div class="relative z-10">
                     @if (newEvent != null)
@@ -174,12 +177,14 @@ else
                 {
                     <div class="relative group transition-all duration-300 flex flex-col md:flex-row px-6 py-10 md:p-10 justify-between items-center hover:-translate-y-1 gap-6 md:gap-0">
 
-                        <div class="absolute -left-2 -right-2 -top-8 -bottom-8 md:-inset-4 z-0 overflow-visible pointer-events-none">
+                        <div class="hidden md:block absolute -inset-4 z-0 overflow-visible pointer-events-none">
                             <svg viewBox="0 0 800 120" preserveAspectRatio="none" class="w-full h-full overflow-visible">
                                 <path d="M 6,5 L 795,7 L 794,115 L 4,113 Z" fill="#0b0f19" filter="url(#rugged-top)" class="shadow-lg" />
                                 <path d="M 6,5 L 795,7 L 794,115 L 4,113 Z" fill="none" stroke="#374151" stroke-width="2" filter="url(#rugged-top)" class="group-hover:stroke-gray-500 transition-colors duration-300" />
                             </svg>
                         </div>
+
+                        <div class="md:hidden absolute inset-0 z-0 bg-[#0b0f19] border-2 border-[#374151] rounded-xl shadow-lg pointer-events-none group-hover:border-gray-500 transition-colors duration-300"></div>
 
                         <div class="relative z-10 w-full md:w-auto text-left">
                             <span class="text-bamorange font-mono block mb-2 font-bold tracking-widest text-sm">
