@@ -128,6 +128,11 @@ namespace BamBurrito.Infrastructure.Services
             </div>
 
             <div class=""field"">
+                <span class=""field-label"">Adress:</span>
+                <div>{request.Address}</div>
+            </div>
+
+            <div class=""field"">
                 <span class=""field-label"">Önskat datum & tid:</span>
                 <div>{request.Date:yyyy-MM-dd} | {request.StartTime:HH:mm} - {request.EndTime:HH:mm}</div>
             </div>
@@ -175,8 +180,8 @@ namespace BamBurrito.Infrastructure.Services
                 {
                     // For dev purposes, log the error but we might just simulate success if no local SMTP exists.
                     _logger.LogWarning(smtpEx, "SMTP sändning misslyckades. Konfigurera EmailSettings i appsettings.json. Sparar offerten i logg istället.");
-                    _logger.LogInformation("SIMULERAD EMAIL -> \nTo: {OwnerEmail}\nFrom/ReplyTo: {CustomerEmail}\nNamn: {Name}\nDatum: {Date:yyyy-MM-dd HH:mm} - {EndTime:HH:mm}\nMeddelande: {Message}", 
-                        ownerEmail, request.Email, request.Name, request.StartTime, request.EndTime, request.Message);
+                    _logger.LogInformation("SIMULERAD EMAIL -> \nTo: {OwnerEmail}\nFrom/ReplyTo: {CustomerEmail}\nNamn: {Name}\nAdress: {Address}\nDatum: {Date:yyyy-MM-dd HH:mm} - {EndTime:HH:mm}\nMeddelande: {Message}", 
+                        ownerEmail, request.Email, request.Name, request.Address, request.StartTime, request.EndTime, request.Message);
                 }
             }
             catch (Exception ex)

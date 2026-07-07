@@ -12,7 +12,7 @@
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex flex-grow justify-center items-center space-x-2">
+            <div class="hidden lg:flex flex-grow justify-center items-center space-x-2">
                 <NavItem Href="menu">Meny</NavItem>
                 <img src="assets/burrito.png" alt="Burrito icon" class="nav-burrito-icon h-10 w-10 object-contain filter drop-shadow-md opacity-80" />
 
@@ -27,7 +27,7 @@
             </div>
 
             <!-- Social Media Icons -->
-            <div class="hidden md:flex absolute right-0 flex-col items-center justify-center space-y-2 h-full z-20">
+            <div class="hidden lg:flex absolute right-0 flex-col items-center justify-center space-y-2 h-full z-20">
                 <a href="https://www.facebook.com/profile.php?id=61588663281337" target="_blank" class="text-white hover:scale-110 transform transition-all duration-300 ease-in-out filter drop-shadow-sm">
                     <span class="sr-only">Facebook</span>
                     <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
@@ -39,7 +39,7 @@
             </div>
 
             <!-- Mobile Hamburger Button -->
-            <div class="absolute right-0 flex items-center md:hidden z-30">
+            <div class="absolute right-0 flex items-center lg:hidden z-30">
                 <button type="button" @onclick="ToggleNavMenu" class="inline-flex items-center justify-center p-3 rounded-md text-white hover:scale-110 transform transition-transform focus:outline-none relative z-50">
                     <span class="sr-only">Öppna meny</span>
                     @if (collapseNavMenu)
@@ -57,7 +57,7 @@
     </div>
 
     <!-- DROPDOWN MENY -->
-    <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none -translate-y-4" : "opacity-100 visible pointer-events-auto translate-y-0") transition-all duration-300 ease-in-out md:hidden absolute w-[260px] right-0 top-[100%] h-auto z-50 overflow-visible pb-8">
+    <div class="@(collapseNavMenu ? "opacity-0 invisible pointer-events-none -translate-y-4" : "opacity-100 visible pointer-events-auto translate-y-0") transition-all duration-300 ease-in-out lg:hidden absolute w-[260px] right-0 top-[100%] h-auto z-50 overflow-visible pb-8">
 
         <div class="absolute inset-0 z-0 overflow-visible pointer-events-none w-[calc(100%+30px)]">
             <svg viewBox="0 0 260 300" preserveAspectRatio="none" class="w-full h-full overflow-visible">
