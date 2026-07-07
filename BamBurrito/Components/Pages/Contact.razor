@@ -39,16 +39,16 @@
                     Behöver du mat till ett event eller catering? Hör av dig!
                 </p>
                 <p class="font-trueno text-sm text-gray-400 leading-relaxed uppercase tracking-wide mb-4">
-                    Oavsett om det är en liten tillställning eller ett större event ser vi till att maten sitter som den ska. 
+                    Oavsett om det är en liten tillställning eller ett större event ser vi till att maten sitter som den ska.
                     Vi lagar, levererar och serverar riktigt bra käk som passar just ditt tillfälle – utan krångel.
                 </p>
                 <p class="font-trueno text-sm text-gray-400 leading-relaxed uppercase tracking-wide">
-                    Du slipper stressa över maten och kan fokusera på gästerna istället. 
+                    Du slipper stressa över maten och kan fokusera på gästerna istället.
                     Hör av dig så löser vi något gott tillsammans!
                 </p>
 
                 <div class="flex-grow"></div>
-                
+
                 <div class="mt-8 flex justify-center w-full relative z-20">
                     <button type="button" @onclick="OpenModal" class="relative w-full md:w-3/4 h-16 flex items-center justify-center transform hover:scale-[1.02] transition-all duration-300 group cursor-pointer">
                         <div class="absolute inset-0 z-0 overflow-visible pointer-events-none">
@@ -64,7 +64,7 @@
 
                 <div class="mt-8 overflow-visible pointer-events-none w-full flex justify-center z-10">
                     <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="w-full h-4 overflow-visible opacity-50">
-                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20" 
+                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
                               stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
                     </svg>
                 </div>
@@ -82,7 +82,7 @@
                     <p class="font-trueno text-sm text-gray-400 leading-relaxed uppercase tracking-wide mb-4">
                         Följ oss på sociala medier för att se våra öppettider, eller klicka in på <a href="/places" class="text-white hover:text-bamorange underline transition-colors">Platser</a> för att se vecka för vecka.
                     </p>
-                    
+
                     <div class="flex flex-col sm:flex-row gap-4 mt-2">
                         <a href="https://www.facebook.com/profile.php?id=61588663281337" target="_blank" class="flex items-center gap-2 group w-fit transition-all duration-300">
                             <svg class="h-8 w-8 text-bamorange transform transition duration-300 group-hover:scale-110 group-hover:-rotate-6 group-hover:text-yellow-400 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
@@ -117,7 +117,7 @@
 
                 <div class="mt-8 overflow-visible pointer-events-none w-full flex justify-center">
                     <svg viewBox="0 0 1000 40" preserveAspectRatio="none" class="w-full h-4 overflow-visible opacity-50">
-                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20" 
+                        <path d="M0,20 L50,15 L100,25 L150,15 L200,25 L250,15 L300,25 L350,15 L400,25 L450,15 L500,25 L550,15 L600,25 L650,15 L700,25 L750,15 L800,25 L850,15 L900,25 L950,15 L1000,20"
                               stroke="#FF8400" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#rugged-top)" />
                     </svg>
                 </div>
@@ -129,10 +129,10 @@
 
 @if (isModalOpen)
 {
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300">
-        <div class="relative w-[90%] max-w-lg lg:max-w-3xl bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-lg p-5 sm:p-8 md:p-12 max-h-[85vh] lg:max-h-[90vh] overflow-y-auto box-border mx-auto">
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+        <div class="relative w-full max-w-lg lg:max-w-3xl bg-[#0b0f19] border-2 border-bamorange rounded-xl shadow-lg p-8 md:p-12 max-h-[90vh] overflow-y-auto w-[calc(100%-2rem)]">
 
-            <button @onclick="CloseModal" class="absolute top-3 right-3 lg:top-6 lg:right-6 text-gray-400 hover:text-white transition-colors cursor-pointer">
+            <button @onclick="CloseModal" class="absolute top-4 right-4 lg:top-6 lg:right-6 text-gray-400 hover:text-white transition-colors cursor-pointer">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -145,7 +145,7 @@
 
             <EditForm Model="offerRequest" OnValidSubmit="HandleSubmit">
                 <DataAnnotationsValidator />
-                
+
                 @if (showError)
                 {
                     <div class="mb-6 border-l-4 border-red-500 bg-red-900/20 p-4 text-sm font-trueno tracking-widest text-red-400 uppercase">
@@ -214,7 +214,7 @@
 {
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
         <div class="relative w-full max-w-lg bg-[#0b0f19] border-2 border-green-500 rounded-xl shadow-2xl p-10 text-center">
-            
+
             <div class="mx-auto w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
                 <svg class="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -224,7 +224,7 @@
             <h2 class="text-3xl font-trueno uppercase tracking-wider text-white drop-shadow mb-4">
                 Förfrågan <span class="text-green-500">Skickad!</span>
             </h2>
-            
+
             <p class="font-trueno text-sm text-gray-400 leading-relaxed uppercase tracking-wide mb-8">
                 Tack för ditt meddelande! Vi har mottagit din förfrågan och återkommer med en offert så snart vi kan.
             </p>
